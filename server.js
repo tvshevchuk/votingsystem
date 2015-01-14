@@ -4,19 +4,42 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
-var cloudinary = require('cloudinary');
+var passport = require('passport');
+var VKStrategy = require('passport-vkontakte').Strategy;
 
 var connection_string = "mongodb://heroku_app33213068:49c3g24b8kk9a264nc9mvn0q6p@ds031591.mongolab.com:31591/heroku_app33213068";
 mongoose.connect(connection_string);
 
-cloudinary.config({
-    cloud_name: 'dikpnirpb',
-    api_key: '911283725616916',
-    api_secret: 'a676b67565c6767a6767d6767f676fe1'
+var userSchema = mongoose.Schema({
+    id: String,
+    token: String,
+    email: String,
+    name: String
 });
+
+var User = mongoose.model('User', userSchema);
+
+passport.use(new VKStrategy({
+    clientID: '4730054',
+    clientSecret: 'c4Qd5CraNXjM9DzvPwQp',
+    callbackURL: 'https://facemafia.herokuapp.com/auth/vkontakte/callback'
+}, function(accessToken, refreshToken, profile, done) {
+        console.log(profile);
+        User.findOrCreate({ id: profile.id }, function (err, user) {
+            return done(err, user);
+        });
+    }
+));
 
 var app = express();
 app.use(express.static(__dirname + '/public'));
+
+app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
+
+app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/'}),
+    function(req, res) {
+        res.redirect('/');
+    });
 
 app.get('*', function(req, res) {
    res.sendfile('./public/index.html');
