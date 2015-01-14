@@ -10,14 +10,14 @@ var VKStrategy = require('passport-vkontakte').Strategy;
 var connection_string = "mongodb://heroku_app33213068:49c3g24b8kk9a264nc9mvn0q6p@ds031591.mongolab.com:31591/heroku_app33213068";
 mongoose.connect(connection_string);
 
-var userSchema = mongoose.Schema({
+var userSchema = new mongoose.Schema({
     id: String,
     token: String,
     email: String,
     name: String
 });
 
-var User = mongoose.model('User', userSchema);
+var User = mongoose.model('user', userSchema);
 
 passport.use(new VKStrategy({
     clientID: '4730054',
@@ -25,9 +25,7 @@ passport.use(new VKStrategy({
     callbackURL: 'https://facemafia.herokuapp.com/auth/vkontakte/callback'
 }, function(accessToken, refreshToken, profile, done) {
         console.log(profile);
-        User.findOrCreate({ id: profile.id }, function (err, user) {
-            return done(err, user);
-        });
+        return done();
     }
 ));
 
