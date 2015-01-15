@@ -26,16 +26,6 @@ var playerSchema = new mongoose.Schema({
 
 var Player = mongoose.model('Player', playerSchema);
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
-});
-
 passport.use(new VKStrategy({
     clientID: '4730054',
     clientSecret: 'c4Qd5CraNXjM9DzvPwQp',
@@ -51,11 +41,8 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 
-app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '#/home'}),
-    function(req, res) {
-        console.log('asd');
-        res.redirect('#/home');
-    });
+app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte',
+    {failureRedirect: '#/login', successRedirect: '#/home'}));
 
 app.get('*', function(req, res) {
    res.sendfile('./public/index.html');
