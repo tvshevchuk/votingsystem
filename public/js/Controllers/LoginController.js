@@ -5,7 +5,7 @@
 app.controller('LoginController', ['$http', function($http) {
 
     this.auth = function() {
-        $http.get('/auth/vkontakte');
+        $http.jsonp('/auth/vkontakte');
     };
 
 }]);
