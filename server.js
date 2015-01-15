@@ -51,10 +51,10 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 
-app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/login'}),
+app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '#/home'}),
     function(req, res) {
         console.log('asd');
-        res.redirect('/home');
+        res.redirect('#/home');
     });
 
 app.get('*', function(req, res) {
