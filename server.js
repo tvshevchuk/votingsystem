@@ -19,6 +19,13 @@ var userSchema = new mongoose.Schema({
 
 var User = mongoose.model('user', userSchema);
 
+var playerSchema = new mongoose.Schema({
+    nickname: String,
+    rating: Number
+});
+
+var Player = mongoose.model('Player', playerSchema);
+
 passport.use(new VKStrategy({
     clientID: '4730054',
     clientSecret: 'c4Qd5CraNXjM9DzvPwQp',
@@ -36,7 +43,7 @@ app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 
 app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/'}),
     function(req, res) {
-        res.redirect('/');
+        res.redirect('/home');
     });
 
 app.get('*', function(req, res) {
