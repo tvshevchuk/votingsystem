@@ -1,1 +1,7 @@
-<h1>Rating</h1>
+<div class="container">
+    <div class="col-md-4" ng-repeat="player in ctrl.players">
+        <h3>{{player.nickname}}</h3>
+        <h5>Рейтинг: {{player.rating}}</h5>
+        <img style="width: auto; height: 500px" ng-src="{{player.image}}"/>
+    </div>
+</div>

@@ -4,29 +4,39 @@
 
 var app = angular.module('myApp', ['ui.router'])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider.otherwise('/home/voting');
 
         $stateProvider
-            .state('login', {
-                url: '/login',
-                templateUrl: 'templates/login.html',
-                controller: 'LoginController',
-                controllerAs: 'ctrl'
-            })
             .state('home', {
+                abstract: true,
                 url: '/home',
-                templateUrl: 'templates/home.html'
+                templateUrl: 'templates/home.html',
+                controller: 'HomeController',
+                resolve: {
+                    parentLoad: function($http) {
+                        return $http.get('/api/players');
+                    }
+                }
             })
             .state('home.voting', {
-                templateUrl: 'templates/voting.html'
+                url: '/voting',
+                templateUrl: 'templates/voting.html',
+                controller: 'VotingController',
+                controllerAs: 'ctrl',
+                resolve: {
+                    allPlayers: function(parentLoad) {
+                        return parentLoad;
+                    }
+                }
             })
             .state('home.rating', {
-                templateUrl: 'templates/rating.html'
+                url: '/rating',
+                templateUrl: 'templates/rating.html',
+                controller: 'RatingController',
+                controllerAs: 'ctrl'
             })
-            .state('home.playerbase', {
-                templateUrl: 'templates/playerbase.html'
-            })
-            .state('home.addplayer', {
-                templateUrl: 'templates/addplayer.html'
+            .state('getout', {
+                url: '/getout',
+                templateUrl: 'templates/getout.html'
             });
     }]);
