@@ -10,11 +10,11 @@ module.exports = function(app, passport) {
         console.log('get login.ejs');
         res.render('login.ejs');
     });
-
+/*
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.sendfile('./public/home.html');
+        res.sendfile('login.ejs');
     });
-
+*/
     app.get('/api/user', isLoggedIn, function(req, res) {
         res.send(req.user);
     });
