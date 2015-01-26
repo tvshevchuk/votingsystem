@@ -5,6 +5,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var morgan = require('morgan');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -20,6 +21,7 @@ var app = express();
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({'extended': true}));
 app.use(bodyParser.json());
+app.use(morgan('combined'));
 
 app.set('view engine', 'ejs');
 

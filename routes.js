@@ -7,6 +7,7 @@ var Player = require('./models/Player.js');
 module.exports = function(app, passport) {
 
     app.get('/', function(req, res) {
+        console.log('get login.ejs');
         res.render('login.ejs');
     });
 
