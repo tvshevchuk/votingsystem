@@ -23,7 +23,7 @@ module.exports = function(passport) {
     passport.use(new VkontakteStrategy({
             clientID: VK_APP_ID,
             clientSecret: VK_APP_SECRET,
-            callbackURL: '/auth/vkontakte/callback'
+            callbackURL: 'https://facemafia.herokuapp.com/auth/vkontakte/callback'
         },
         function(token, refreshToken, profile, done) {
             process.nextTick(function() {
