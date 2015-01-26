@@ -12,7 +12,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.sendfile('./public/main.html');
+        res.sendfile('./public/home.html');
     });
 
     app.get('/api/user', isLoggedIn, function(req, res) {
