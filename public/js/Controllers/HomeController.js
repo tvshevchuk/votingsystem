@@ -2,18 +2,11 @@
  * Created by tvshevchuk on 1/20/2015.
  */
 
-app.controller('HomeController', function($http, $state, parentLoad) {
+app.controller('HomeController', function($state, $stateParams, DataService) {
 
-    console.log(parentLoad);
-
-    $http.get('/api/user')
-        .success(function(user) {
-            var index = _.findIndex(parentLoad.data, function(player) {
-                return player.url == user.url;
-            });
-            if (index < 0) {
-                $state.go('getout');
-            };
-        });
+    this.goVoting = function(type) {
+        DataService.votingType = type;
+        $state.go('^.voting', $stateParams, {reload: true});
+    };
 
 });

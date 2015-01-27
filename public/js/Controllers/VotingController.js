@@ -2,7 +2,9 @@
  * Created by tvshevchuk on 1/22/2015.
  */
 
-app.controller('VotingController', function($http, allPlayers) {
+app.controller('VotingController', function($http, allPlayers, DataService) {
+
+   console.log(DataService.votingType);
 
    function shuffleArray(array) {
       for (var i = array.length - 1; i > 0; i--) {
@@ -37,7 +39,7 @@ app.controller('VotingController', function($http, allPlayers) {
 
    this.comparePlayers();
 
-   this.voteForPlayer = function(isLeft) {
+   this.voteForPlayer = function(isLeft, type) {
       var self = this;
 
       var ea = 1 / (1 + Math.pow(10, (this.rightPlayer.rating - this.leftPlayer.rating) / 400));

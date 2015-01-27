@@ -7,8 +7,14 @@ var User = require('../models/User.js');
 var Player = require('../models/Player.js');
 var UserPlayer = require('../models/UserPlayer.js');
 
-var VK_APP_ID = "4730054";
-var VK_APP_SECRET = "c4Qd5CraNXjM9DzvPwQp";
+//var VK_APP_ID = "4730054";
+//var VK_APP_SECRET = "c4Qd5CraNXjM9DzvPwQp";
+//var VK_CALLBACK_URL = 'https://facemafia.herokuapp.com/auth/vkontakte/callback';
+
+//Local
+var VK_APP_ID = "4733214";
+var VK_APP_SECRET = "8qD3StnIBkL2mzrIFRGl";
+var VK_CALLBACK_URL = '/auth/vkontakte/callback';
 
 module.exports = function(passport) {
 
@@ -25,15 +31,40 @@ module.exports = function(passport) {
     passport.use(new VkontakteStrategy({
             clientID: VK_APP_ID,
             clientSecret: VK_APP_SECRET,
-            callbackURL: 'https://facemafia.herokuapp.com/auth/vkontakte/callback'
+            callbackURL: VK_CALLBACK_URL
         },
         function(token, refreshToken, profile, done) {
             process.nextTick(function() {
                 User.findOne({'_id': profile.id}, function(err, user) {
                     if (err) {
                         return done(err);
-                    };
+                    }
                     if (user) {
+                        Player.find({}, function(err, players) {
+                            if (err) {
+                                throw err;
+                            }
+                            console.log(players.length);
+                            for (var i = 0; i < players.length; i++) {
+                                var player = players[i];
+                                UserPlayer.find({'userId': user._id, 'playerId': player._id},
+                                    function(err, userPlayer) {
+                                        console.log(userPlayer);
+                                        if (err) {
+                                            throw err;
+                                        }
+                                        if (!userPlayer.length) {
+                                            var newUserPlayer = new UserPlayer();
+                                            newUserPlayer.userId = user._id;
+                                            newUserPlayer.playerId = player._id;
+                                            newUserPlayer.rating = 1600;
+                                            newUserPlayer.red_rating = 1600;
+                                            newUserPlayer.black_rating = 1600;
+                                            newUserPlayer.save();
+                                        }
+                                    });
+                            }
+                        });
                         return done(null, user);
                     } else {
                         var newUser = new User();
@@ -44,10 +75,25 @@ module.exports = function(passport) {
                         newUser.save(function(err) {
                             if (err) {
                                 throw  err;
-                            };
+                            }
+                            Player.find({}, function(err, player) {
+                                if (err) {
+                                    throw err;
+                                }
+                                for (var i = 0; i < player.length; i++) {
+                                    var newUserPlayer = new UserPlayer();
+                                    newUserPlayer.userId = newUser._id;
+                                    newUserPlayer.playerId = player[i]._id;
+                                    newUserPlayer.rating = 1600;
+                                    newUserPlayer.red_rating = 1600;
+                                    newUserPlayer.black_rating = 1600;
+                                    newUserPlayer.save();
+                                }
+                            });
+
                             return done(null, newUser);
                         });
-                    };
+                    }
                 });
             });
         }

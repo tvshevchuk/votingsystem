@@ -12,7 +12,11 @@ var app = angular.module('myApp', ['ui.router'])
                 url: '/home',
                 templateUrl: 'templates/home.html',
                 controller: 'HomeController',
+                controllerAs: 'ctrl',
                 resolve: {
+                    votingType: function() {
+                        return 0;
+                    },
                     parentLoad: function($http) {
                         return $http.get('/api/players');
                     }
@@ -26,6 +30,9 @@ var app = angular.module('myApp', ['ui.router'])
                 resolve: {
                     allPlayers: function(parentLoad) {
                         return parentLoad;
+                    },
+                    voting: function(votingType) {
+                        return votingType;
                     }
                 }
             })

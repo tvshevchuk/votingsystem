@@ -7,7 +7,6 @@ var Player = require('./models/Player.js');
 module.exports = function(app, passport) {
 
     app.get('/', function(req, res) {
-        console.log('get login.ejs');
         res.render('login.ejs');
     });
 
@@ -34,11 +33,11 @@ module.exports = function(app, passport) {
            if (err) {
                throw err;
            };
-           player.rating = req.body.rating;
+           if (req.body.rating) { player.rating = req.body.rating; }
+           if (req.body.red_rating) { player.red_rating = req.body.red_rating; }
+           if (req.body.black_rating) { player.black_rating = req.body.black_rating; }
            player.save(function(err) {
-               if (err) {
-                   throw err;
-               };
+               if (err) { throw err; }
            });
            res.json(player);
        });
