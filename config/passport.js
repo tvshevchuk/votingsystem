@@ -7,8 +7,8 @@ var User = require('../models/User.js');
 var Player = require('../models/Player.js');
 var UserPlayer = require('../models/UserPlayer.js');
 
-var VK_APP_ID = "4733214";
-var VK_APP_SECRET = "8qD3StnIBkL2mzrIFRGl";
+var VK_APP_ID = "4730054";
+var VK_APP_SECRET = "c4Qd5CraNXjM9DzvPwQp";
 
 module.exports = function(passport) {
 
@@ -25,7 +25,7 @@ module.exports = function(passport) {
     passport.use(new VkontakteStrategy({
             clientID: VK_APP_ID,
             clientSecret: VK_APP_SECRET,
-            callbackURL: '/auth/vkontakte/callback'
+            callbackURL: 'https://facemafia.herokuapp.com/auth/vkontakte/callback'
         },
         function(token, refreshToken, profile, done) {
             process.nextTick(function() {
