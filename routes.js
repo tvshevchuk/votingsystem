@@ -15,6 +15,10 @@ module.exports = function(app, passport) {
         res.sendfile('./public/home.html');
     });
 
+    app.get('/getout', isLoggedIn, function(req, res) {
+        res.render('getout.ejs');
+    });
+
     app.get('/api/user', isLoggedIn, function(req, res) {
         res.send(req.user);
     });
@@ -42,10 +46,19 @@ module.exports = function(app, passport) {
 
     app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 
-    app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {
-        successRedirect: '/profile',
-        failureRedirect: '/'
-    }));
+    app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/'}),
+    function(req, res) {
+        Player.findOne({'url': req.user.url}, function(err, player) {
+            if (err) {
+                throw err;
+            };
+            if (player) {
+                res.redirect('/profile');
+            } else {
+                res.redirect('/getout');
+            }
+        })
+    });
 
     app.get('/logout', function(req, res) {
         req.logout();
@@ -53,7 +66,6 @@ module.exports = function(app, passport) {
     });
 
     function isLoggedIn(req, res, next) {
-        console.log('is authenticated', req.isAuthenticated());
         if (req.isAuthenticated()) {
             return next();
         };

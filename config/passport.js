@@ -4,6 +4,8 @@
 
 var VkontakteStrategy = require('passport-vkontakte').Strategy;
 var User = require('../models/User.js');
+var Player = require('../models/Player.js');
+var UserPlayer = require('../models/UserPlayer.js');
 
 var VK_APP_ID = "4733214";
 var VK_APP_SECRET = "8qD3StnIBkL2mzrIFRGl";
