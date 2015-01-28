@@ -1,7 +1,13 @@
 <div class="container">
     <div class="col-md-4" ng-repeat="player in ctrl.players">
         <h3>{{player.nickname}}</h3>
-        <h5>Рейтинг: {{player.rating}}</h5>
+        <h5 ng-show="ctrl.type == 0">Рейтинг: {{player.rating}}</h5>
+        <h5 ng-show="ctrl.type == 1">Рейтинг: {{player.red_rating}}</h5>
+        <h5 ng-show="ctrl.type == 2">Рейтинг: {{player.black_rating}}</h5>
+        <h5 ng-show="ctrl.type == 3">Рейтинг: {{player.myRating}}</h5>
+        <h5 ng-show="ctrl.type == 4">Рейтинг: {{player.myRedRating}}</h5>
+        <h5 ng-show="ctrl.type == 5">Рейтинг: {{player.myBlackRating}}</h5>
+
         <img style="width: auto; height: 500px" ng-src="{{player.image}}"/>
     </div>
 </div>

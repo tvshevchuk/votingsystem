@@ -4,17 +4,18 @@
 
 var VkontakteStrategy = require('passport-vkontakte').Strategy;
 var User = require('../models/User.js');
-var Player = require('../models/Player.js');
-var UserPlayer = require('../models/UserPlayer.js');
 
-//var VK_APP_ID = "4730054";
-//var VK_APP_SECRET = "c4Qd5CraNXjM9DzvPwQp";
-//var VK_CALLBACK_URL = 'https://facemafia.herokuapp.com/auth/vkontakte/callback';
-
+var VK_APP_ID, VK_APP_SECRET, VK_CALLBACK_URL;
+if (process.env.PORT) {
+    VK_APP_ID = "4730054";
+    VK_APP_SECRET = "c4Qd5CraNXjM9DzvPwQp";
+    VK_CALLBACK_URL = 'https://facemafia.herokuapp.com/auth/vkontakte/callback';
+} else {
 //Local
-var VK_APP_ID = "4733214";
-var VK_APP_SECRET = "8qD3StnIBkL2mzrIFRGl";
-var VK_CALLBACK_URL = '/auth/vkontakte/callback';
+    VK_APP_ID = "4733214";
+    VK_APP_SECRET = "8qD3StnIBkL2mzrIFRGl";
+    VK_CALLBACK_URL = '/auth/vkontakte/callback';
+};
 
 module.exports = function(passport) {
 
@@ -36,35 +37,8 @@ module.exports = function(passport) {
         function(token, refreshToken, profile, done) {
             process.nextTick(function() {
                 User.findOne({'_id': profile.id}, function(err, user) {
-                    if (err) {
-                        return done(err);
-                    }
+                    if (err) {return done(err);}
                     if (user) {
-                        Player.find({}, function(err, players) {
-                            if (err) {
-                                throw err;
-                            }
-                            console.log(players.length);
-                            for (var i = 0; i < players.length; i++) {
-                                var player = players[i];
-                                UserPlayer.find({'userId': user._id, 'playerId': player._id},
-                                    function(err, userPlayer) {
-                                        console.log(userPlayer);
-                                        if (err) {
-                                            throw err;
-                                        }
-                                        if (!userPlayer.length) {
-                                            var newUserPlayer = new UserPlayer();
-                                            newUserPlayer.userId = user._id;
-                                            newUserPlayer.playerId = player._id;
-                                            newUserPlayer.rating = 1600;
-                                            newUserPlayer.red_rating = 1600;
-                                            newUserPlayer.black_rating = 1600;
-                                            newUserPlayer.save();
-                                        }
-                                    });
-                            }
-                        });
                         return done(null, user);
                     } else {
                         var newUser = new User();
@@ -73,24 +47,7 @@ module.exports = function(passport) {
                         newUser.name = profile.name.givenName + ' ' + profile.name.familyName;
                         newUser.url = profile.profileUrl;
                         newUser.save(function(err) {
-                            if (err) {
-                                throw  err;
-                            }
-                            Player.find({}, function(err, player) {
-                                if (err) {
-                                    throw err;
-                                }
-                                for (var i = 0; i < player.length; i++) {
-                                    var newUserPlayer = new UserPlayer();
-                                    newUserPlayer.userId = newUser._id;
-                                    newUserPlayer.playerId = player[i]._id;
-                                    newUserPlayer.rating = 1600;
-                                    newUserPlayer.red_rating = 1600;
-                                    newUserPlayer.black_rating = 1600;
-                                    newUserPlayer.save();
-                                }
-                            });
-
+                            if (err) {throw  err;}
                             return done(null, newUser);
                         });
                     }

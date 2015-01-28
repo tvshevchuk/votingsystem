@@ -9,4 +9,9 @@ app.controller('HomeController', function($state, $stateParams, DataService) {
         $state.go('^.voting', $stateParams, {reload: true});
     };
 
+    this.goRating = function(type) {
+        DataService.ratingType = type;
+        $state.go('^.rating', $stateParams, {reload: true});
+    };
+
 });

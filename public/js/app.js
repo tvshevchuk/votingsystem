@@ -41,9 +41,5 @@ var app = angular.module('myApp', ['ui.router'])
                 templateUrl: 'templates/rating.html',
                 controller: 'RatingController',
                 controllerAs: 'ctrl'
-            })
-            .state('getout', {
-                url: '/getout',
-                templateUrl: 'templates/getout.html'
             });
     }]);

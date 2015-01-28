@@ -4,8 +4,6 @@
 
 app.controller('VotingController', function($http, allPlayers, DataService) {
 
-   console.log(DataService.votingType);
-
    function shuffleArray(array) {
       for (var i = array.length - 1; i > 0; i--) {
          var j = Math.floor(Math.random() * (i + 1));
@@ -14,14 +12,26 @@ app.controller('VotingController', function($http, allPlayers, DataService) {
          array[j] = temp;
       }
       return angular.copy(array);
-   };
+   }
 
-   var newArray = shuffleArray(allPlayers.data);
+    var array = allPlayers.data;
+    var players = [];
+    for (var i = 0; i < array.length; i++) {
+        var player = angular.copy(array[i].player);
+        player.myRating = array[i].myRatings.myRating;
+        player.myRedRating = array[i].myRatings.myRedRating;
+        player.myBlackRating = array[i].myRatings.myBlackRating;
+        players.push(player);
+    }
+
+    var newArray = shuffleArray(players);
 
    this.comparePlayers = function() {
 
       this.leftPlayer = newArray[0];
       this.rightPlayer = newArray[1];
+       console.log(this.leftPlayer, this.rightPlayer);
+
       newArray.splice(0, 2);
 
       if (newArray.length == 0) {
@@ -39,24 +49,73 @@ app.controller('VotingController', function($http, allPlayers, DataService) {
 
    this.comparePlayers();
 
-   this.voteForPlayer = function(isLeft, type) {
+   this.voteForPlayer = function(isLeft) {
       var self = this;
 
-      var ea = 1 / (1 + Math.pow(10, (this.rightPlayer.rating - this.leftPlayer.rating) / 400));
-      var eb = 1 / (1 + Math.pow(10, (this.leftPlayer.rating - this.rightPlayer.rating) / 400));
+      var leftRating, rightRating, myLeftRating, myRightRating;
+      switch (DataService.votingType) {
+         case 0:
+             leftRating = this.leftPlayer.rating;
+             rightRating = this.rightPlayer.rating;
+             myLeftRating = this.leftPlayer.myRating;
+             myRightRating = this.rightPlayer.myRating;
+             break;
+         case 1:
+             leftRating = this.leftPlayer.red_rating;
+             rightRating = this.rightPlayer.red_rating;
+             myLeftRating = this.leftPlayer.myRedRating;
+             myRightRating = this.rightPlayer.myRedRating;
+             break;
+         case 2:
+             leftRating = this.leftPlayer.black_rating;
+             rightRating = this.rightPlayer.black_rating;
+             myLeftRating = this.leftPlayer.myBlackRating;
+             myRightRating = this.rightPlayer.myBlackRating;
+             break;
+      }
+
+      var ea = 1 / (1 + Math.pow(10, (rightRating - leftRating) / 400));
+      var eb = 1 / (1 + Math.pow(10, (leftRating - rightRating) / 400));
 
       var sa = isLeft ? 1 : 0;
       var sb = isLeft ? 0 : 1;
 
-      var ka = this.leftPlayer.rating > 2400 ? 10 : 15;
-      var kb = this.rightPlayer.rating > 2400 ? 10 : 15;
+      var ka = leftRating > 2400 ? 10 : 15;
+      var kb = rightRating > 2400 ? 10 : 15;
 
-      this.leftPlayer.rating = Math.floor(this.leftPlayer.rating + ka * (sa - ea));
-      this.rightPlayer.rating = Math.floor(this.rightPlayer.rating + kb * (sb - eb));
+      leftRating = Math.floor(leftRating + ka * (sa - ea));
+      rightRating = Math.floor(rightRating + kb * (sb - eb));
 
-      $http.post('/api/player/' + self.leftPlayer._id, {rating: self.leftPlayer.rating})
+       var mea = 1 / (1 + Math.pow(10, (myRightRating - myLeftRating) / 400));
+       var meb = 1 / (1 + Math.pow(10, (myLeftRating - myRightRating) / 400));
+
+       var msa = isLeft ? 1 : 0;
+       var msb = isLeft ? 0 : 1;
+
+       var mka = myLeftRating > 2400 ? 10 : 15;
+       var mkb = myRightRating > 2400 ? 10 : 15;
+
+       myLeftRating = Math.floor(myLeftRating + mka * (msa - mea));
+       myRightRating = Math.floor(myRightRating + mkb * (msb - meb));
+
+      var postLeft, postRight;
+      switch (DataService.votingType) {
+         case 0:
+              postLeft = {rating: leftRating, myRating: myLeftRating};
+              postRight = {rating: rightRating, myRating: myRightRating};
+              break;
+         case 1:
+              postLeft = {red_rating: leftRating, myRedRating: myLeftRating};
+              postRight = {red_rating: rightRating, myRedRating: myRightRating};
+              break;
+         case 2:
+              postLeft = {black_rating: leftRating, myBlackRating: myLeftRating};
+              postRight = {black_rating: rightRating, myBlackRating: myRightRating};
+      }
+
+      $http.post('/api/player/' + self.leftPlayer._id, postLeft)
           .success(function() {
-             $http.post('/api/player/' + self.rightPlayer._id, {rating: self.rightPlayer.rating})
+             $http.post('/api/player/' + self.rightPlayer._id, postRight)
                  .success(function() {
                     self.comparePlayers();
                  });

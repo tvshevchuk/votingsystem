@@ -19,7 +19,26 @@
                     <li><a href="" ng-click="ctrl.goVoting(2)">Лучший черный игрок</a></li>
                 </ul>
             </li>
-            <li><a ui-sref=".rating">Рейтинг</a></li>
+            <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                    Рейтинг <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="" ng-click="ctrl.goRating(0)">Лучший игрок</a></li>
+                    <li><a href="" ng-click="ctrl.goRating(1)">Лучший красный игрок</a></li>
+                    <li><a href="" ng-click="ctrl.goRating(2)">Лучший черный игрок</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                    Мой рейтинг <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="" ng-click="ctrl.goRating(3)">Лучший игрок</a></li>
+                    <li><a href="" ng-click="ctrl.goRating(4)">Лучший красный игрок</a></li>
+                    <li><a href="" ng-click="ctrl.goRating(5)">Лучший черный игрок</a></li>
+                </ul>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/logout">Выход</a></li>
