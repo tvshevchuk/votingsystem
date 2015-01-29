@@ -29,7 +29,9 @@ var app = angular.module('myApp', ['ui.router'])
                 controllerAs: 'ctrl',
                 resolve: {
                     allPlayers: function(parentLoad) {
-                        return parentLoad;
+                        return _.remove(parentLoad.data, function(player) {
+                            return player.player.url != "http://vk.com/tourist_petya";
+                        });
                     },
                     voting: function(votingType) {
                         return votingType;

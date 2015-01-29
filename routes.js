@@ -52,17 +52,18 @@ module.exports = function(app, passport) {
             Player.find({}, function(err, players) {
                 if (err) {throw err;}
 
-                var myPlayers = [], player, temp;
+                var myPlayers = [], player, userplayer, temp;
                 for (var i = 0; i < players.length; i++) {
                     for (var j = 0; j < userplayers.length; j++) {
                         if (userplayers[j].playerId == players[i]._id) {
                             player = players[i];
+                            userplayer = userplayers[j];
                         }
                     }
                     temp = {};
-                    temp.myRating = player.rating;
-                    temp.myRedRating = player.red_rating;
-                    temp.myBlackRating = player.black_rating;
+                    temp.myRating = userplayer.rating;
+                    temp.myRedRating = userplayer.red_rating;
+                    temp.myBlackRating = userplayer.black_rating;
                     myPlayers.push({player: player, myRatings: temp});
                 }
 

@@ -8,7 +8,7 @@ app.controller('RatingController', function($http, DataService) {
     _this.type = DataService.ratingType;
 
     $http.get('/api/players').success(function(result) {
-        console.log(result);
+
         var players = [];
         for (var i = 0; i < result.length; i++) {
             var player = angular.copy(result[i].player);
@@ -17,6 +17,11 @@ app.controller('RatingController', function($http, DataService) {
             player.myBlackRating = result[i].myRatings.myBlackRating;
             players.push(player);
         }
+
+        _.remove(players, function(player) {
+            return player.url == "http://vk.com/tourist_petya";
+        });
+
         _this.players = _.sortBy(players, function(player) {
             switch (_this.type) {
                 case 0:
@@ -39,6 +44,8 @@ app.controller('RatingController', function($http, DataService) {
                     break;
             }
         });
+
+        console.log(_this.players);
     });
 
 });
