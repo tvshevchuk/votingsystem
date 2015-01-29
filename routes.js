@@ -12,27 +12,30 @@ module.exports = function(app, passport) {
     });
 
     app.get('/profile', isLoggedIn, function(req, res) {
-        Player.find({}, function(err, players) {
-            for (var i = 0; i < players.length; i++) {
-                (function(){
-                    var player = players[i];
-                    UserPlayer.find()
-                        .and([{'userId': req.user._id}, {'playerId': player._id}])
-                        .exec(function (err, userPlayer) {
-                            if (!userPlayer.length) {
-                                var newUserPlayer = new UserPlayer();
-                                newUserPlayer.userId = req.user._id;
-                                newUserPlayer.playerId = player._id;
-                                newUserPlayer.rating = 1600;
-                                newUserPlayer.red_rating = 1600;
-                                newUserPlayer.black_rating = 1600;
-                                newUserPlayer.save();
-                            }
-                        });
-                })(players);
-            }
+        UserPlayer.find({'userId': req.user._id}, function(err, userplayers) {
+            if (err) { throw err; }
+            Player.find({}, function(err, players) {
+                if (err) {throw err;}
+                for (var i = 0; i < players.length; i++) {
+                    var absent = true;
+                    for (var j = 0; j < userplayers.length; j++) {
+                        if (userplayers[j].playerId == players[i]._id) {
+                            absent = false;
+                        }
+                    }
+                    if (absent) {
+                        var newUserPlayer = new UserPlayer();
+                        newUserPlayer.userId = req.user._id;
+                        newUserPlayer.playerId = players[i]._id;
+                        newUserPlayer.rating = 1600;
+                        newUserPlayer.red_rating = 1600;
+                        newUserPlayer.black_rating = 1600;
+                        newUserPlayer.save();
+                    }
+                }
+                res.sendfile('./public/main.html');
+            })
         });
-        res.sendfile('./public/main.html');
     });
 
     app.get('/getout', isLoggedIn, function(req, res) {
@@ -44,26 +47,27 @@ module.exports = function(app, passport) {
     });
 
     app.get('/api/players', isLoggedIn, function(req, res) {
-        Player.find({}, function(err, players) {
-            var myPlayers = [];
-            for (var i = 0; i < players.length; i++) {
-                (function() {
-                    var player = players[i];
-                    UserPlayer.findOne()
-                        .and([{'userId': req.user._id}, {'playerId': players[i]._id}])
-                        .exec(function (err, userPlayer) {
-                            var temp = {};
-                            temp.myRating = userPlayer.rating;
-                            temp.myRedRating = userPlayer.red_rating;
-                            temp.myBlackRating = userPlayer.black_rating;
-                            myPlayers.push({player: player, myRatings: temp});
-                        });
-                })(players);
-            }
-            setTimeout(function() {
+        UserPlayer.find({'userId': req.user._id}, function(err, userplayers) {
+            if (err) { throw err; }
+            Player.find({}, function(err, players) {
+                if (err) {throw err;}
+
+                var myPlayers = [], player, temp;
+                for (var i = 0; i < players.length; i++) {
+                    for (var j = 0; j < userplayers.length; j++) {
+                        if (userplayers[j].playerId == players[i]._id) {
+                            player = players[i];
+                        }
+                    }
+                    temp = {};
+                    temp.myRating = player.rating;
+                    temp.myRedRating = player.red_rating;
+                    temp.myBlackRating = player.black_rating;
+                    myPlayers.push({player: player, myRatings: temp});
+                }
+
                 res.send(myPlayers);
-            }, 500);
-         //  res.send(myPlayers);
+            })
         });
     });
 
