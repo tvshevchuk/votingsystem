@@ -14,7 +14,7 @@ app.controller('VotingController', function($http, allPlayers, DataService) {
       return angular.copy(array);
    }
 
-    var array = allPlayers.data;
+    var array = allPlayers;
     var players = [];
     for (var i = 0; i < array.length; i++) {
         var player = angular.copy(array[i].player);
