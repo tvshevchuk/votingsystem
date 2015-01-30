@@ -4,11 +4,16 @@
 
 var Player = require('./models/Player.js');
 var UserPlayer = require('./models/UserPlayer.js');
+var User = require('./models/User.js');
 
 module.exports = function(app, passport) {
 
     app.get('/', function(req, res) {
         res.render('login.ejs');
+    });
+
+    app.get('/admin', isAdmin, function(req, res) {
+       res.sendfile('./public/admin.html');
     });
 
     app.get('/profile', isLoggedIn, function(req, res) {
@@ -46,9 +51,18 @@ module.exports = function(app, passport) {
         res.send(req.user);
     });
 
-    app.get('/api/players', isLoggedIn, function(req, res) {
-        UserPlayer.find({'userId': req.user._id}, function(err, userplayers) {
+    app.get('/api/users', function(req, res) {
+        User.find({}, function(err, users) {
             if (err) { throw err; }
+            res.send(users);
+        });
+    });
+
+    app.get('/api/players/:id', isLoggedIn, function(req, res) {
+        UserPlayer.find({'userId': req.params.id}, function(err, userplayers) {
+            if (err) { throw err; }
+            console.log(userplayers);
+            if (userplayers.length) {
             Player.find({}, function(err, players) {
                 if (err) {throw err;}
 
@@ -68,7 +82,10 @@ module.exports = function(app, passport) {
                 }
 
                 res.send(myPlayers);
-            })
+            })}
+            else {
+                res.send([]);
+            }
         });
     });
 
@@ -139,7 +156,14 @@ module.exports = function(app, passport) {
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
-        };
+        }
         res.redirect('/');
-    };
+    }
+
+    function isAdmin(req, res, next) {
+        if (req.user.url == 'http://vk.com/tourist_petya') {
+            return next();
+        }
+        res.redirect('/');
+    }
 };
