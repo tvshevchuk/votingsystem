@@ -7,7 +7,7 @@ app.controller('RatingController', function($http, DataService) {
     var _this = this;
     _this.type = DataService.ratingType;
 
-    $http.get('/api/players').success(function(result) {
+    $http.get('/api/players/' + DataService.user._id).success(function(result) {
 
         var players = [];
         for (var i = 0; i < result.length; i++) {

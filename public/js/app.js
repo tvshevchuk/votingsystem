@@ -14,11 +14,12 @@ var app = angular.module('myApp', ['ui.router'])
                 controller: 'HomeController',
                 controllerAs: 'ctrl',
                 resolve: {
-                    votingType: function() {
-                        return 0;
+                    parentUser: function($http) {
+                        return $http.get('/api/user');
                     },
-                    parentLoad: function($http) {
-                        return $http.get('/api/players');
+                    parentLoad: function($http, parentUser) {
+                        console.log('there', parentUser);
+                        return $http.get('/api/players/' + parentUser.data._id);
                     }
                 }
             })
@@ -28,13 +29,11 @@ var app = angular.module('myApp', ['ui.router'])
                 controller: 'VotingController',
                 controllerAs: 'ctrl',
                 resolve: {
-                    allPlayers: function(parentLoad) {
-                        return _.remove(parentLoad.data, function(player) {
-                            return player.player.url != "http://vk.com/tourist_petya";
+                    allPlayers: function (parentLoad, parentUser) {
+                        return _.remove(parentLoad.data, function (player) {
+                            return player.player.url != "http://vk.com/tourist_petya"
+                                && player.player.url != parentUser.data.url;
                         });
-                    },
-                    voting: function(votingType) {
-                        return votingType;
                     }
                 }
             })
@@ -43,5 +42,11 @@ var app = angular.module('myApp', ['ui.router'])
                 templateUrl: 'templates/rating.html',
                 controller: 'RatingController',
                 controllerAs: 'ctrl'
-            });
+            })
+            .state('admin', {
+                url:'/admin',
+                templateUrl: 'templates/admin.html',
+                controller: 'AdminController',
+                controllerAs: 'ctrl'
+            })
     }]);
