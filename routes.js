@@ -61,7 +61,6 @@ module.exports = function(app, passport) {
     app.get('/api/players/:id', isLoggedIn, function(req, res) {
         UserPlayer.find({'userId': req.params.id}, function(err, userplayers) {
             if (err) { throw err; }
-            console.log(userplayers);
             if (userplayers.length) {
             Player.find({}, function(err, players) {
                 if (err) {throw err;}

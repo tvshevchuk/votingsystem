@@ -1,10 +1,12 @@
-<div class="row">
-    <div class="col-md-6">
-        <h2>{{ctrl.leftPlayer.nickname}}</h2>
-        <img width="70%" height="auto" ng-src="{{ctrl.leftPlayer.image}}" ng-click="ctrl.voteForPlayer(true)"/>
+
+
+    <div >
+        <!--<h2>{{ctrl.leftPlayer.nickname}}</h2>-->
+        <img ng-src="{{ctrl.leftPlayer.image}}" ng-click="ctrl.voteForPlayer(true)"
+             style="float: left; width: 50%; cursor: pointer;"/>
     </div>
-    <div class="col-md-6">
-        <h2>{{ctrl.rightPlayer.nickname}}</h2>
-        <img width="70%" height="auto" ng-src="{{ctrl.rightPlayer.image}}" ng-click="ctrl.voteForPlayer(false)"/>
+    <div>
+        <!--<h2>{{ctrl.rightPlayer.nickname}}</h2>-->
+        <img ng-src="{{ctrl.rightPlayer.image}}" ng-click="ctrl.voteForPlayer(false)"
+             style="float: left; width: 50%; cursor: pointer;"/>
     </div>
-</div>

@@ -2,13 +2,16 @@
  * Created by tvshevchuk on 1/22/2015.
  */
 
-app.controller('RatingController', function($http, DataService) {
+app.controller('RatingController', function($http, allPlayers, DataService) {
 
     var _this = this;
     _this.type = DataService.ratingType;
 
-    $http.get('/api/players/' + DataService.user._id).success(function(result) {
+    console.log(allPlayers);
 
+   // $http.get('/api/players/' + DataService.user._id).success(function(result) {
+
+        var result = allPlayers;
         var players = [];
         for (var i = 0; i < result.length; i++) {
             var player = angular.copy(result[i].player);
@@ -45,7 +48,6 @@ app.controller('RatingController', function($http, DataService) {
             }
         });
 
-        console.log(_this.players);
-    });
+   // });
 
 });

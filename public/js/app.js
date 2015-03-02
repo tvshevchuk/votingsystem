@@ -41,7 +41,14 @@ var app = angular.module('myApp', ['ui.router'])
                 url: '/rating',
                 templateUrl: 'templates/rating.html',
                 controller: 'RatingController',
-                controllerAs: 'ctrl'
+                controllerAs: 'ctrl',
+                resolve: {
+                    allPlayers: function (parentLoad, parentUser) {
+                        return _.remove(parentLoad.data, function (player) {
+                            return player.player.url != "http://vk.com/tourist_petya";
+                        });
+                    }
+                }
             })
             .state('admin', {
                 url:'/admin',
