@@ -9,38 +9,7 @@ var User = require('./models/User.js');
 module.exports = function(app, passport) {
 
     app.get('/', function(req, res) {
-        res.render('login.ejs');
-    });
-
-    app.get('/admin', isAdmin, function(req, res) {
-       res.sendfile('./public/admin.html');
-    });
-
-    app.get('/profile', isLoggedIn, function(req, res) {
-        UserPlayer.find({'userId': req.user._id}, function(err, userplayers) {
-            if (err) { throw err; }
-            Player.find({}, function(err, players) {
-                if (err) {throw err;}
-                for (var i = 0; i < players.length; i++) {
-                    var absent = true;
-                    for (var j = 0; j < userplayers.length; j++) {
-                        if (userplayers[j].playerId == players[i]._id) {
-                            absent = false;
-                        }
-                    }
-                    if (absent) {
-                        var newUserPlayer = new UserPlayer();
-                        newUserPlayer.userId = req.user._id;
-                        newUserPlayer.playerId = players[i]._id;
-                        newUserPlayer.rating = 1600;
-                        newUserPlayer.red_rating = 1600;
-                        newUserPlayer.black_rating = 1600;
-                        newUserPlayer.save();
-                    }
-                }
-                res.sendfile('./public/main.html');
-            })
-        });
+        res.sendfile('./public/main.html');
     });
 
     app.get('/getout', isLoggedIn, function(req, res) {
@@ -58,6 +27,13 @@ module.exports = function(app, passport) {
         });
     });
 
+    app.get('/api/players', function(req, res) {
+        Player.find({}, function(err, players) {
+            if (err) { throw err; }
+            res.send(players);
+        })
+    });
+
     app.get('/api/players/:id', isLoggedIn, function(req, res) {
         UserPlayer.find({'userId': req.params.id}, function(err, userplayers) {
             if (err) { throw err; }
@@ -65,19 +41,23 @@ module.exports = function(app, passport) {
             Player.find({}, function(err, players) {
                 if (err) {throw err;}
 
-                var myPlayers = [], player, userplayer, temp;
+                var myPlayers = [], temp;
                 for (var i = 0; i < players.length; i++) {
+                    var player = null,
+                        userplayer = null;
                     for (var j = 0; j < userplayers.length; j++) {
                         if (userplayers[j].playerId == players[i]._id) {
                             player = players[i];
                             userplayer = userplayers[j];
                         }
                     }
-                    temp = {};
-                    temp.myRating = userplayer.rating;
-                    temp.myRedRating = userplayer.red_rating;
-                    temp.myBlackRating = userplayer.black_rating;
-                    myPlayers.push({player: player, myRatings: temp});
+                    if (player) {
+                        temp = {};
+                        temp.myRating = userplayer.rating;
+                        temp.myRedRating = userplayer.red_rating;
+                        temp.myBlackRating = userplayer.black_rating;
+                        myPlayers.push({player: player, myRatings: temp});
+                    }
                 }
 
                 res.send(myPlayers);
@@ -135,16 +115,42 @@ module.exports = function(app, passport) {
 
     app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/'}),
     function(req, res) {
-        Player.findOne({'url': req.user.url}, function(err, player) {
-            if (err) {
-                throw err;
-            };
-            if (player) {
-                res.redirect('/profile');
-            } else {
-                res.redirect('/getout');
+        Player.find({}, function(err, players) {
+            if (err) { throw err; }
+            var ownPlayer;
+            for (var i = 0; i < players.length; i++) {
+                if (players[i]._id == req.user._id) {
+                    ownPlayer = players[i];
+                }
             }
-        })
+            if (ownPlayer) {
+                UserPlayer.find({'userId': req.user._id}, function(err, userplayers) {
+                    if (err) {throw err;}
+                    for (var i = 0; i < players.length; i++) {
+                        if (players[i]._id != ownPlayer._id) {
+                            var absent = true;
+                            for (var j = 0; j < userplayers.length; j++) {
+                                if (userplayers[j].playerId == players[i]._id) {
+                                    absent = false;
+                                }
+                            }
+                            if (absent) {
+                                var newUserPlayer = new UserPlayer();
+                                newUserPlayer.userId = req.user._id;
+                                newUserPlayer.playerId = players[i]._id;
+                                newUserPlayer.rating = 1600;
+                                newUserPlayer.red_rating = 1600;
+                                newUserPlayer.black_rating = 1600;
+                                newUserPlayer.save();
+                            }
+                        }
+                    }
+                    res.render('after-auth.ejs', {user: req.user});
+                });
+            } else {
+                res.render('getout.ejs');
+            }
+        });
     });
 
     app.get('/logout', function(req, res) {
@@ -160,7 +166,7 @@ module.exports = function(app, passport) {
     }
 
     function isAdmin(req, res, next) {
-        if (req.user.url == 'http://vk.com/tourist_petya') {
+        if (req.user._id == '17783420') {
             return next();
         }
         res.redirect('/');

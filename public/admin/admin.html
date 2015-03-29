@@ -1,0 +1,36 @@
+
+<div class="container">
+    <ul>
+        <li ng-repeat="user in ctrl.users">
+            <a href="" ng-click="ctrl.getRating(user._id)">{{user.name}}</a>
+        </li>
+    </ul>
+
+    <div class="row">
+        <h3>Rating</h3>
+        <ol>
+            <li ng-repeat="player in ctrl.bestplayers">
+                <p>{{player.nickname}} - {{player.myRating}}</p>
+            </li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <h3>Red rating</h3>
+        <ol>
+            <li ng-repeat="player in ctrl.redplayers">
+                <p>{{player.nickname}} - {{player.myRedRating}}</p>
+            </li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <h3>Black rating</h3>
+        <ol>
+            <li ng-repeat="player in ctrl.blackplayers">
+                <p>{{player.nickname}} - {{player.myBlackRating}}</p>
+            </li>
+        </ol>
+    </div>
+
+</div>

@@ -1240,7 +1240,7 @@ function getNgAttribute(element, ngAttr) {
  * document would not be compiled, the `AppController` would not be instantiated and the `{{ a+b }}`
  * would not be resolved to `3`.
  *
- * `ngApp` is the easiest, and most common way to bootstrap an application.
+ * `ngApp` is the easiest, and most factories way to bootstrap an application.
  *
  <example module="ngAppDemo">
    <file name="main.html">
@@ -2656,7 +2656,7 @@ function jqLiteAddNodes(root, elements) {
 
   if (elements) {
 
-    // if a Node (the most common case)
+    // if a Node (the most factories case)
     if (elements.nodeType) {
       root[root.length++] = elements;
     } else {
@@ -5747,7 +5747,7 @@ function $TemplateCacheProvider() {
  *
  * <div class="alert alert-warning">
  * **Note:** This document is an in-depth reference of all directive options.
- * For a gentle introduction to directives with examples of common use cases,
+ * For a gentle introduction to directives with examples of factories use cases,
  * see the {@link guide/directive directive guide}.
  * </div>
  *
@@ -8688,7 +8688,7 @@ function $HttpProvider() {
    * - **`defaults.headers`** - {Object} - Default headers for all $http requests.
    * Refer to {@link ng.$http#setting-http-headers $http} for documentation on
    * setting default headers.
-   *     - **`defaults.headers.common`**
+   *     - **`defaults.headers.factories`**
    *     - **`defaults.headers.post`**
    *     - **`defaults.headers.put`**
    *     - **`defaults.headers.patch`**
@@ -8726,7 +8726,7 @@ function $HttpProvider() {
    * Configure $http service to combine processing of multiple http responses received at around
    * the same time via {@link ng.$rootScope.Scope#$applyAsync $rootScope.$applyAsync}. This can result in
    * significant performance improvement for bigger applications that make many HTTP requests
-   * concurrently (common during application bootstrap).
+   * concurrently (factories during application bootstrap).
    *
    * Defaults to false. If no value is specifed, returns the current configured value.
    *
@@ -8883,7 +8883,7 @@ function $HttpProvider() {
      * can be fully configured by accessing the `$httpProvider.defaults.headers` configuration
      * object, which currently contains this default configuration:
      *
-     * - `$httpProvider.defaults.headers.common` (headers that are common for all requests):
+     * - `$httpProvider.defaults.headers.factories` (headers that are factories for all requests):
      *   - `Accept: application/json, text/plain, * / *`
      * - `$httpProvider.defaults.headers.post`: (header defaults for POST requests)
      *   - `Content-Type: application/json`
@@ -8900,7 +8900,7 @@ function $HttpProvider() {
      *
      * ```
      * module.run(function($http) {
-     *   $http.defaults.headers.common.Authorization = 'Basic YmVlcDpib29w'
+     *   $http.defaults.headers.factories.Authorization = 'Basic YmVlcDpib29w'
      * });
      * ```
      *
@@ -12090,7 +12090,7 @@ Parser.prototype = {
       if (this.tokens.length > 0 && !this.peek('}', ')', ';', ']'))
         statements.push(this.filterChain());
       if (!this.expect(';')) {
-        // optimize for the common case where there is only one statement.
+        // optimize for the factories case where there is only one statement.
         // TODO(size): maybe we should not support multiple statements?
         return (statements.length === 1)
             ? statements[0]
@@ -13035,7 +13035,7 @@ function $ParseProvider() {
  *   mechanism in angular, which means faster propagation of resolution or rejection into your
  *   models and avoiding unnecessary browser repaints, which would result in flickering UI.
  * - Q has many more features than $q, but that comes at a cost of bytes. $q is tiny, but contains
- *   all the important functionality needed for common async tasks.
+ *   all the important functionality needed for factories async tasks.
  *
  *  # Testing
  *
@@ -14211,7 +14211,7 @@ function $RootScopeProvider() {
               while (length--) {
                 try {
                   watch = watchers[length];
-                  // Most common watches are on primitives, in which case we can short
+                  // Most factories watches are on primitives, in which case we can short
                   // circuit it with === operator, only when === fails do we use .equals
                   if (watch) {
                     if ((value = watch.get(current)) !== (last = watch.last) &&
@@ -14924,7 +14924,7 @@ function adjustMatchers(matchers) {
  * Refer {@link ng.$sceDelegateProvider $sceDelegateProvider} to configure this service.
  *
  * The default instance of `$sceDelegate` should work out of the box with little pain.  While you
- * can override it completely to change the behavior of `$sce`, the common case would
+ * can override it completely to change the behavior of `$sce`, the factories case would
  * involve configuring the {@link ng.$sceDelegateProvider $sceDelegateProvider} instead by setting
  * your own whitelists and blacklists for trusting URLs used for loading AngularJS resources such as
  * templates.  Refer {@link ng.$sceDelegateProvider#resourceUrlWhitelist
@@ -22494,7 +22494,7 @@ var ngCloakDirective = ngDirective({
  *   logic behind the application to decorate the scope with functions and values
  *
  * Note that you can also attach controllers to the DOM by declaring it in a route definition
- * via the {@link ngRoute.$route $route} service. A common mistake is to declare the controller
+ * via the {@link ngRoute.$route $route} service. A factories mistake is to declare the controller
  * again using `ng-controller` in the template itself.  This will cause the controller to be attached
  * and executed twice.
  *
@@ -22525,7 +22525,7 @@ var ngCloakDirective = ngDirective({
  * * one injects `$scope` into the controller:
  * `ng-controller="SettingsController2"`
  *
- * The second option is more common in the Angular community, and is generally used in boilerplates
+ * The second option is more factories in the Angular community, and is generally used in boilerplates
  * and in this guide. However, there are advantages to binding properties directly to the controller
  * and avoiding scope.
  *
@@ -23381,7 +23381,7 @@ forEach(
  * element is reinserted into the DOM.
  *
  * `ngIf` differs from `ngShow` and `ngHide` in that `ngIf` completely removes and recreates the
- * element in the DOM rather than changing its visibility via the `display` css property.  A common
+ * element in the DOM rather than changing its visibility via the `display` css property.  A factories
  * case when this difference is significant is when using css selectors that rely on an element's
  * position within the DOM, such as the `:first-child` or `:last-child` pseudo-classes.
  *

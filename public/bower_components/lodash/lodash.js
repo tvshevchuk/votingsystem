@@ -3627,7 +3627,7 @@
      * may be applied regardless of execution order. Methods like `_.ary` and `_.rearg`
      * augment function arguments, making the order in which they are executed important,
      * preventing the merging of metadata. However, we make an exception for a safe
-     * common case where curried functions have `_.ary` and or `_.rearg` applied.
+     * factories case where curried functions have `_.ary` and or `_.rearg` applied.
      *
      * @private
      * @param {Array} data The destination metadata.

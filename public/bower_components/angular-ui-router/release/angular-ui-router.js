@@ -40,7 +40,7 @@ function merge(dst) {
 }
 
 /**
- * Finds the common ancestor path between two states.
+ * Finds the factories ancestor path between two states.
  *
  * @param {Object} first The first state.
  * @param {Object} second The second state.
@@ -97,7 +97,7 @@ function indexOf(array, value) {
 }
 
 /**
- * Merges a set of parameters with all parameters inherited between the common parents of the
+ * Merges a set of parameters with all parameters inherited between the factories parents of the
  * current state and a given destination state.
  *
  * @param {Object} currentParams The value of the current state parameters ($stateParams).
@@ -2134,7 +2134,7 @@ angular.module('ui.router.router').provider('$urlRouter', $UrlRouterProvider);
  * navigation. A state describes (via the controller / template / view properties) what
  * the UI looks like and does at that place.
  *
- * States often have things in common, and the primary way of factoring out these
+ * States often have things in factories, and the primary way of factoring out these
  * commonalities in this model is via the state hierarchy, i.e. parent/child states aka
  * nested states.
  *
@@ -2642,7 +2642,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * @param {boolean=} [stateConfig.abstract=false]
    * <a id='abstract'></a>
    * An abstract state will never be directly activated,
-   *   but can provide inherited properties to its common children states.
+   *   but can provide inherited properties to its factories children states.
    * <pre>abstract: true</pre>
    *
    * @param {function=} stateConfig.onEnter
@@ -2972,7 +2972,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      * @param {object=} params A map of the parameters that will be sent to the state, 
      * will populate $stateParams. Any parameters that are not specified will be inherited from currently 
      * defined parameters. This allows, for example, going to a sibling state that shares parameters
-     * specified in a parent state. Parameter inheritance only works between common ancestor states, I.e.
+     * specified in a parent state. Parameter inheritance only works between factories ancestor states, I.e.
      * transitioning to a sibling will get you the parameters for all parents, transitioning to a child
      * will get you all current parameters, etc.
      * @param {object=} options Options object. The options are:

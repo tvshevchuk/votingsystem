@@ -3,24 +3,30 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Facemafia</title>
-    <link rel="stylesheet" href="bootstrap.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/bootstrap.css"/>
 </head>
 
 <body>
-    <div ui-view></div>
+
+    <div ui-view="header"></div>
+    <div ui-view="content"></div>
 
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/lodash/lodash.min.js"></script>
-    <script src="bootstrap.js"></script>
+    <script src="bower_components/bootstrap/bootstrap.js"></script>
 
-    <script src="js/app.js"></script>
-    <script src="js/Services/DataService.js"></script>
-    <script src="js/Controllers/HomeController.js"></script>
-    <script src="js/Controllers/VotingController.js"></script>
-    <script src="js/Controllers/RatingController.js"></script>
-    <script src="js/Controllers/AdminController.js"></script>
+    <script src="app.js"></script>
+    <script src="factories/PlayersFactory.js"></script>
+    <script src="factories/MyPlayersFactory.js"></script>
+    <script src="factories/UserFactory.js"></script>
+    <script src="header/js/StartHeaderController.js"></script>
+    <script src="header/js/MainHeaderController.js"></script>
+    <script src="content/js/RatingController.js"></script>
+    <script src="content/js/MyRatingController.js"></script>
+    <script src="content/js/VotingController.js"></script>
+    <script src="admin/AdminController.js"></script>
 
 </body>
 </html>

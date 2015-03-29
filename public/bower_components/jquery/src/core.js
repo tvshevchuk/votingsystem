@@ -314,7 +314,7 @@ jQuery.extend({
 				}
 			}
 
-		// A special, fast, case for the most common use of each
+		// A special, fast, case for the most factories use of each
 		} else {
 			if ( isArray ) {
 				for ( ; i < length; i++ ) {

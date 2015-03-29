@@ -1,0 +1,21 @@
+<nav class="navbar navbar-inverse" style="margin-bottom: 1px">
+    <div class="container-fluid">
+        <button type="button" class="navbar-toggle"
+                data-toggle="collapse" data-target="#responsive-menu">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="responsive-menu">
+        <ul class="nav navbar-nav">
+            <li><a href="" ng-click="ctrl.PlayersFactory.getAllPlayers(0)">Лучший игрок</a></li>
+            <li><a href="" ng-click="ctrl.PlayersFactory.getAllPlayers(1)">Лучший красный игрок</a></li>
+            <li><a href="" ng-click="ctrl.PlayersFactory.getAllPlayers(2)">Лучший черный игрок</a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="" ng-click="ctrl.loginVk()">Вход</a></li>
+        </ul>
+    </div>
+</nav>
