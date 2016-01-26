@@ -1,0 +1,8 @@
+<div class="container">
+    <div  style="float: left; width: 20%; margin-bottom: 0.5em;"
+          ng-repeat="player in ratingCtrl.players| orderBy: '-rating' track by player._id">
+        <h3>{{player.nickname}}</h3>
+        <h5>Рейтинг: {{player.rating}}</h5>
+        <img style="width: 100%; height: 400px" ng-src="{{player.image}}"/>
+    </div>
+</div>

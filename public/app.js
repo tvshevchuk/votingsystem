@@ -1,8 +1,5 @@
-/**
- * Created by tvshevchuk on 1/14/2015.
- */
 
-var app = angular.module('myApp', ['ui.router'])
+angular.module('mafia', ['ui.router'])
     .config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
         function($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -18,14 +15,14 @@ var app = angular.module('myApp', ['ui.router'])
                     url: '/',
                     views: {
                         'header': {
-                            templateUrl: 'header/templates/startHeader.tpl.html',
+                            templateUrl: 'start/startHeader/startHeader.tpl.html',
                             controller: 'StartHeaderController',
-                            controllerAs: 'ctrl'
+                            controllerAs: 'startHeaderCtrl'
                         },
                         'content': {
-                            templateUrl: 'content/templates/ratingContent.tpl.html',
+                            templateUrl: 'common/rating/ratingContent.tpl.html',
                             controller: 'RatingController',
-                            controllerAs: 'ctrl'
+                            controllerAs: 'ratingCtrl'
                         }
                     }
                 })
@@ -34,9 +31,9 @@ var app = angular.module('myApp', ['ui.router'])
                     url: '/profile',
                     views: {
                         'header': {
-                            templateUrl: 'header/templates/mainHeader.tpl.html',
+                            templateUrl: 'profile/mainHeader/mainHeader.tpl.html',
                             controller: 'MainHeaderController',
-                            controllerAs: 'ctrl'
+                            controllerAs: 'mainHeaderCtrl'
                         }
                     }
                 })
@@ -44,9 +41,9 @@ var app = angular.module('myApp', ['ui.router'])
                     url: '/voting',
                     views: {
                         'content@': {
-                            templateUrl: 'content/templates/votingContent.tpl.html',
+                            templateUrl: 'profile/voting/votingContent.tpl.html',
                             controller: 'VotingController',
-                            controllerAs: 'ctrl'
+                            controllerAs: 'votingCtrl'
                         }
                     }
                 })
@@ -54,9 +51,9 @@ var app = angular.module('myApp', ['ui.router'])
                     url: '/rating',
                     views: {
                         'content@': {
-                            templateUrl: 'content/templates/ratingContent.tpl.html',
+                            templateUrl: 'common/rating/ratingContent.tpl.html',
                             controller: 'RatingController',
-                            controllerAs: 'ctrl'
+                            controllerAs: 'ratingCtrl'
                         }
                     }
                 })
@@ -64,9 +61,9 @@ var app = angular.module('myApp', ['ui.router'])
                     url: '/myrating',
                     views: {
                         'content@': {
-                            templateUrl: 'content/templates/ratingContent.tpl.html',
+                            templateUrl: 'common/rating/ratingContent.tpl.html',
                             controller: 'MyRatingController',
-                            controllerAs: 'ctrl'
+                            controllerAs: 'ratingCtrl'
                         }
                     }
                 })
@@ -79,21 +76,20 @@ var app = angular.module('myApp', ['ui.router'])
                         }
                     }
                 })
-    }]);
+    }])
+    .value('UserValue', {})
+    .run(['$window', '$rootScope', '$state', 'UserValue',
+    function($window, $rootScope, $state, UserValue) {
 
-app.run(['$window', '$rootScope', '$state', 'UserFactory',
-    function($window, $rootScope, $state, UserFactory) {
+        $window.app = function(user) {
+            $rootScope.$apply(function() {
+                angular.extend(UserValue, user);
+                $rootScope.$emit('successLogin');
+            })
+        };
 
-    $window.app = function(user) {
-        $rootScope.$apply(function() {
-            console.log(user);
-            UserFactory.user = user;
-            $rootScope.$emit('successLogin');
-        })
-    }
-
-    $rootScope.$on('successLogin', function() {
-        $state.go('profile.rating');
-    });
+        $rootScope.$on('successLogin', function() {
+            $state.go('profile.rating');
+        });
 
 }]);

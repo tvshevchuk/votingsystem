@@ -7,9 +7,7 @@ var mongoose = require('mongoose');
 var userPlayerSchema = mongoose.Schema({
     userId: String,
     playerId: String,
-    rating: Number,
-    red_rating: Number,
-    black_rating: Number
+    rating: Number
 });
 
 module.exports = mongoose.model('UserPlayer', userPlayerSchema);

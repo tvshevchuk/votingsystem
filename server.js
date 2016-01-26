@@ -10,7 +10,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var connection_string = "mongodb://heroku_app33213068:49c3g24b8kk9a264nc9mvn0q6p@ds031591.mongolab.com:31591/heroku_app33213068";
+var connection_string = "mongodb://heroku_7tgdb3bv:dq3f6pvsebkfrhk26ejujb6t94@ds047075.mongolab.com:47075/heroku_7tgdb3bv";
 mongoose.connect(connection_string);
 
 require('./config/passport.js')(passport);

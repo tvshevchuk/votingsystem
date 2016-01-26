@@ -27,7 +27,7 @@ function merge(dst) {
 }
 
 /**
- * Finds the factories ancestor path between two states.
+ * Finds the common ancestor path between two states.
  *
  * @param {Object} first The first state.
  * @param {Object} second The second state.
@@ -55,7 +55,7 @@ function objectKeys(object) {
   }
   var result = [];
 
-  angular.forEach(object, function(val, key) {
+  forEach(object, function(val, key) {
     result.push(key);
   });
   return result;
@@ -84,7 +84,7 @@ function indexOf(array, value) {
 }
 
 /**
- * Merges a set of parameters with all parameters inherited between the factories parents of the
+ * Merges a set of parameters with all parameters inherited between the common parents of the
  * current state and a given destination state.
  *
  * @param {Object} currentParams The value of the current state parameters ($stateParams).

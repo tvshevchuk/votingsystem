@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
             Player.find({}, function(err, players) {
                 if (err) {throw err;}
 
-                var myPlayers = [], temp;
+                var myPlayers = [];
                 for (var i = 0; i < players.length; i++) {
                     var player = null,
                         userplayer = null;
@@ -52,11 +52,8 @@ module.exports = function(app, passport) {
                         }
                     }
                     if (player) {
-                        temp = {};
-                        temp.myRating = userplayer.rating;
-                        temp.myRedRating = userplayer.red_rating;
-                        temp.myBlackRating = userplayer.black_rating;
-                        myPlayers.push({player: player, myRatings: temp});
+                        player.myRating = userplayer.rating;
+                        myPlayers.push(player);
                     }
                 }
 
@@ -74,32 +71,12 @@ module.exports = function(app, passport) {
                throw err;
            }
            if (req.body.rating) { player.rating = req.body.rating; }
-           if (req.body.red_rating) { player.red_rating = req.body.red_rating; }
-           if (req.body.black_rating) { player.black_rating = req.body.black_rating; }
 
            if (req.body.myRating) {
                UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
                    .exec(function(err, userPlayer) {
                        if (err) {throw err;}
                        userPlayer.rating = req.body.myRating;
-                       userPlayer.save();
-                   });
-           }
-
-           if (req.body.myRedRating) {
-               UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
-                   .exec(function(err, userPlayer) {
-                       if (err) {throw err;}
-                       userPlayer.red_rating = req.body.myRedRating;
-                       userPlayer.save();
-                   });
-           }
-
-           if (req.body.myBlackRating) {
-               UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
-                   .exec(function(err, userPlayer) {
-                       if (err) {throw err;}
-                       userPlayer.black_rating = req.body.myBlackRating;
                        userPlayer.save();
                    });
            }
@@ -139,8 +116,6 @@ module.exports = function(app, passport) {
                                 newUserPlayer.userId = req.user._id;
                                 newUserPlayer.playerId = players[i]._id;
                                 newUserPlayer.rating = 1600;
-                                newUserPlayer.red_rating = 1600;
-                                newUserPlayer.black_rating = 1600;
                                 newUserPlayer.save();
                             }
                         }
