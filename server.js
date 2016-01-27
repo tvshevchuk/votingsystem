@@ -1,6 +1,3 @@
-/**
- * Created by tvshevchuk on 1/13/2015.
- */
 
 var express = require('express');
 var mongoose = require('mongoose');
@@ -29,7 +26,8 @@ app.use(passport.session());
 
 app.use(express.static(__dirname + '/public'));
 
-require('./routes.js')(app, passport);
+var router = require('./routes.js');
+app.use('/', router);
 
 var port = process.env.PORT || 5000;
 

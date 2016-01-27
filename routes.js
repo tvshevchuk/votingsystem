@@ -1,43 +1,43 @@
-/**
- * Created by tvshevchuk on 1/21/2015.
- */
+
+var express = require('express');
+var passport = require('passport');
 
 var Player = require('./models/Player.js');
 var UserPlayer = require('./models/UserPlayer.js');
 var User = require('./models/User.js');
 
-module.exports = function(app, passport) {
+var router = express.Router();
 
-    app.get('/', function(req, res) {
-        res.sendfile('./public/main.html');
+router.get('/', function(req, res) {
+    res.sendFile('./public/index.html');
+});
+
+router.get('/getout', isLoggedIn, function(req, res) {
+    res.render('getout.ejs');
+});
+
+router.get('/api/user', isLoggedIn, function(req, res) {
+    res.send(req.user);
+});
+
+router.get('/api/users', function(req, res) {
+    User.find({}, function(err, users) {
+        if (err) { throw err; }
+        res.send(users);
     });
+});
 
-    app.get('/getout', isLoggedIn, function(req, res) {
-        res.render('getout.ejs');
-    });
+router.get('/api/players', function(req, res) {
+    Player.find({}, function(err, players) {
+        if (err) { throw err; }
+        res.send(players);
+    })
+});
 
-    app.get('/api/user', isLoggedIn, function(req, res) {
-        res.send(req.user);
-    });
-
-    app.get('/api/users', function(req, res) {
-        User.find({}, function(err, users) {
-            if (err) { throw err; }
-            res.send(users);
-        });
-    });
-
-    app.get('/api/players', function(req, res) {
-        Player.find({}, function(err, players) {
-            if (err) { throw err; }
-            res.send(players);
-        })
-    });
-
-    app.get('/api/players/:id', isLoggedIn, function(req, res) {
-        UserPlayer.find({'userId': req.params.id}, function(err, userplayers) {
-            if (err) { throw err; }
-            if (userplayers.length) {
+router.get('/api/players/:id', isLoggedIn, function(req, res) {
+    UserPlayer.find({'userId': req.params.id}, function(err, userplayers) {
+        if (err) { throw err; }
+        if (userplayers.length) {
             Player.find({}, function(err, players) {
                 if (err) {throw err;}
 
@@ -59,38 +59,38 @@ module.exports = function(app, passport) {
 
                 res.send(myPlayers);
             })}
-            else {
-                res.send([]);
-            }
+        else {
+            res.send([]);
+        }
+    });
+});
+
+router.post('/api/player/:id', function(req, res) {
+    Player.findOne({'_id': req.params.id}, function(err, player) {
+        if (err) {
+            throw err;
+        }
+        if (req.body.rating) { player.rating = req.body.rating; }
+
+        if (req.body.myRating) {
+            UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
+                .exec(function(err, userPlayer) {
+                    if (err) {throw err;}
+                    userPlayer.rating = req.body.myRating;
+                    userPlayer.save();
+                });
+        }
+
+        player.save(function(err) {
+            if (err) { throw err; }
         });
+        res.json(player);
     });
+});
 
-    app.post('/api/player/:id', function(req, res) {
-       Player.findOne({'_id': req.params.id}, function(err, player) {
-           if (err) {
-               throw err;
-           }
-           if (req.body.rating) { player.rating = req.body.rating; }
+router.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 
-           if (req.body.myRating) {
-               UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
-                   .exec(function(err, userPlayer) {
-                       if (err) {throw err;}
-                       userPlayer.rating = req.body.myRating;
-                       userPlayer.save();
-                   });
-           }
-
-           player.save(function(err) {
-               if (err) { throw err; }
-           });
-           res.json(player);
-       });
-    });
-
-    app.get('/auth/vkontakte', passport.authenticate('vkontakte'));
-
-    app.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/'}),
+router.get('/auth/vkontakte/callback', passport.authenticate('vkontakte', {failureRedirect: '/'}),
     function(req, res) {
         Player.find({}, function(err, players) {
             if (err) { throw err; }
@@ -128,22 +128,16 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
+router.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
-    function isLoggedIn(req, res, next) {
-        if (req.isAuthenticated()) {
-            return next();
-        }
-        res.redirect('/');
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
     }
+    res.redirect('/');
+}
 
-    function isAdmin(req, res, next) {
-        if (req.user._id == '17783420') {
-            return next();
-        }
-        res.redirect('/');
-    }
-};
+module.exports = router;
