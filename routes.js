@@ -17,7 +17,7 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', function(req, res) {
-    res.sendFile('./public/main.html');
+    res.sendfile('./public/main.html');
 });
 
 router.get('/getout', isLoggedIn, function(req, res) {
