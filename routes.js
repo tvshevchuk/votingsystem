@@ -76,7 +76,7 @@ router.post('/api/player/:id', function(req, res) {
             UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
                 .exec(function(err, userPlayer) {
                     if (err) {throw err;}
-                    userPlayer.rating = req.body.myRating;
+                    userPlayer.myRating = req.body.myRating;
                     userPlayer.save();
                 });
         }
