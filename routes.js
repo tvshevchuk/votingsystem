@@ -8,6 +8,14 @@ var User = require('./models/User.js');
 
 var router = express.Router();
 
+router.get('*', function(req, res, done) {
+    if(process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto']!='https') {
+        res.redirect('https://facemafia.herokuapp.com' + req.url);
+    } else {
+        done();
+    }
+});
+
 router.get('/', function(req, res) {
     res.sendFile('./public/index.html');
 });
@@ -52,8 +60,13 @@ router.get('/api/players/:id', isLoggedIn, function(req, res) {
                         }
                     }
                     if (player) {
-                        player.myRating = userplayer.rating;
-                        myPlayers.push(player);
+                        myPlayers.push({
+                            _id: player._id,
+                            nickname: player.nickname,
+                            image: player.image,
+                            rating: player.rating,
+                            myRating: userplayer.rating
+                        });
                     }
                 }
 
@@ -76,7 +89,7 @@ router.post('/api/player/:id', function(req, res) {
             UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
                 .exec(function(err, userPlayer) {
                     if (err) {throw err;}
-                    userPlayer.myRating = req.body.myRating;
+                    userPlayer.rating = req.body.myRating;
                     userPlayer.save();
                 });
         }

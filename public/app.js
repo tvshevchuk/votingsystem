@@ -61,9 +61,9 @@ angular.module('mafia', ['ui.router'])
                     url: '/myrating',
                     views: {
                         'content@': {
-                            templateUrl: 'common/rating/ratingContent.tpl.html',
+                            templateUrl: 'profile/myRating/myRating.tpl.html',
                             controller: 'MyRatingController',
-                            controllerAs: 'ratingCtrl'
+                            controllerAs: 'myRatingCtrl'
                         }
                     }
                 })
