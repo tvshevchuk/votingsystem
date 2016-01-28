@@ -8,17 +8,16 @@ var User = require('./models/User.js');
 
 var router = express.Router();
 
-router.get('/', function(req, res, done) {
-    if(process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto']!='https') {
-        res.redirect('https://facemafia.herokuapp.com' + req.url);
-    } else {
-        done();
+router.use(function (req, res, next) {
+    if (!req.secure) {
+        return res.redirect('https://' + req.headers.host + req.url);
     }
+    next();
 });
 
-//router.get('/', function(req, res) {
-//    res.sendFile('./public/index.html');
-//});
+router.get('/', function(req, res) {
+    res.sendFile('./public/main.html');
+});
 
 router.get('/getout', isLoggedIn, function(req, res) {
     res.render('getout.ejs');
