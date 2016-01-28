@@ -10,9 +10,10 @@ var router = express.Router();
 
 router.use(function (req, res, next) {
     if (req.headers["x-forwarded-proto"] !== "https") {
-        return res.redirect('https://' + req.headers.host + req.url);
+        res.redirect('https://' + req.headers.host + req.url);
+    } else {
+        next();
     }
-    next();
 });
 
 router.get('/', function(req, res) {
