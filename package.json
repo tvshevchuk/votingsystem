@@ -3,6 +3,10 @@
   "description": "Voting system for checking better player by clicking",
   "version": "0.3.1",
   "main": "server.js",
+  "engines": {
+    "node": "4.2.x",
+    "npm": "2.14.x"
+  },
   "scripts": {
     "start": "node server.js",
     "postinstall": "gulp production"
