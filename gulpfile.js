@@ -23,7 +23,7 @@ gulp.task('dev-inject', function() {
 
 gulp.task('prod-inject', ['uglify'], function() {
     return gulp.src('./public/main.html')
-        .pipe(inject(gulp.src(['./public/build/all.js']), {read: false}))
+        .pipe(inject(gulp.src(['./public/build/all.js'], {read: false}), {ignorePath: 'public', addRootSlash: false}))
         .pipe(gulp.dest('./public'));
 });
 
