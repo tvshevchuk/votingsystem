@@ -9,8 +9,10 @@ var User = require('./models/User.js');
 var router = express.Router();
 
 router.use(function (req, res, next) {
+    console.log(process.env.NODE_ENV);
     if (req.headers["x-forwarded-proto"] !== "https") {
-        res.redirect('https://' + req.headers.host + req.url);
+        //res.redirect('https://' + req.headers.host + req.url);
+        next();
     } else {
         next();
     }
