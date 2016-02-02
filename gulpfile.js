@@ -24,7 +24,7 @@ gulp.task('dev-inject', function() {
 gulp.task('prod-inject', ['uglify'], function() {
     return gulp.src('./public/main.html')
         .pipe(inject(gulp.src(['./public/build/all.js']), {read: false}))
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('./public'));
 });
 
 gulp.task('development', ['dev-inject']);
