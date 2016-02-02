@@ -16,9 +16,7 @@
     "mongoose": "^3.8.39",
     "mongoose-findorcreate": "^0.1.2",
     "passport": "^0.3.2",
-    "passport-vkontakte": "^0.4.0"
-  },
-  "devDependencies": {
+    "passport-vkontakte": "^0.4.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-debug": "^2.1.2",
