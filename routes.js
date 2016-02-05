@@ -20,6 +20,21 @@ router.use(function (req, res, next) {
     res.sendfile('./public/main.html');
 });
 
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
+
+function isAdmin(req, res, next) {
+    if (req.user.isAdmin) {
+        next();
+    } else {
+        res.status(401).send("You haven't permission");
+    }
+}
+
 router.get('/getout', isLoggedIn, function(req, res) {
     res.render('getout.ejs');
 });
@@ -28,7 +43,7 @@ router.get('/api/user', isLoggedIn, function(req, res) {
     res.send(req.user);
 });
 
-router.get('/api/users', function(req, res) {
+router.get('/api/users', isAdmin, function(req, res) {
     User.find({}, function(err, users) {
         if (err) { throw err; }
         res.send(users);
@@ -145,12 +160,5 @@ router.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}
 
 module.exports = router;

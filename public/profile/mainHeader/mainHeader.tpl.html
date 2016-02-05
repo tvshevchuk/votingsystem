@@ -12,6 +12,7 @@
             <li><a href="" ng-click="mainHeaderCtrl.goVoting(0)">Проголосовать</a></li>
             <li><a href="" ng-click="mainHeaderCtrl.bestPlayer(0)">Общий рейтинг</a></li>
             <li><a href="" ng-click="mainHeaderCtrl.myBestPlayer(0)">Мой рейтинг</a></li>
+            <li><a href="" ng-if="mainHeaderCtrl.user.isAdmin" ng-click="">Админка</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/logout">Выход</a></li>
