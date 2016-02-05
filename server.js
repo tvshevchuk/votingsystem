@@ -7,7 +7,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var connection_string = "mongodb://heroku_7tgdb3bv:dq3f6pvsebkfrhk26ejujb6t94@ds047075.mongolab.com:47075/heroku_7tgdb3bv";
+var favicon = require('serve-favicon');
+
+var connection_string = process.env.NODE_ENV === 'production'
+        ? "mongodb://heroku_7tgdb3bv:dq3f6pvsebkfrhk26ejujb6t94@ds047075.mongolab.com:47075/heroku_7tgdb3bv"
+        : "mongodb://tvshevchuk:nfhfc1993@ds059145.mongolab.com:59145/testmafiadb";
 mongoose.connect(connection_string);
 
 require('./config/passport.js')(passport);
@@ -25,6 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 var router = require('./routes.js');
 app.use('/', router);

@@ -1,5 +1,7 @@
+(function() {
+    'use strict';
 
-angular.module('mafia', ['ui.router'])
+    angular.module('mafia', ['ui.router'])
     .config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
         function($locationProvider, $stateProvider, $urlRouterProvider) {
 
@@ -88,8 +90,15 @@ angular.module('mafia', ['ui.router'])
             })
         };
 
+        $rootScope.$on('$stateChangeSuccess', function() {
+            if (!UserValue._id && $state.current.name != 'start') {
+                $state.go('start');
+            }
+        });
+
         $rootScope.$on('successLogin', function() {
             $state.go('profile.rating');
         });
 
 }]);
+})();

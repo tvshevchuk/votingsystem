@@ -9,15 +9,14 @@ var User = require('./models/User.js');
 var router = express.Router();
 
 router.use(function (req, res, next) {
-    console.log(process.env.NODE_ENV);
-    if (req.headers["x-forwarded-proto"] !== "https") {
+    if (process.env.NODE_ENV === 'production' && req.headers["x-forwarded-proto"] !== "https") {
         res.redirect('https://' + req.headers.host + req.url);
     } else {
         next();
     }
 });
 
-router.get('/', function(req, res) {
+    router.get('/', function(req, res) {
     res.sendfile('./public/main.html');
 });
 

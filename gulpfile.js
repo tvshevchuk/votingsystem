@@ -17,7 +17,8 @@ gulp.task('uglify', ['concat'], function() {
 
 gulp.task('dev-inject', function() {
     return gulp.src('./public/main.html')
-        .pipe(inject(gulp.src(['./public/*.js', './public/**/*.js'], {read: false}), {ignorePath: 'public', addRootSlash: false}))
+        .pipe(inject(gulp.src(['./public/*.js', './public/**/*.js', '!./public/build/*.js'], {read: false}),
+                     {ignorePath: 'public', addRootSlash: false}))
         .pipe(gulp.dest('./public'));
 });
 

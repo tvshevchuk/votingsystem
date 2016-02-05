@@ -3,9 +3,9 @@
 
     angular.module('mafia').controller('VotingController', controller);
 
-    controller.$inject = ['$http', '$state', 'UserValue', 'MyPlayersService'];
+    controller.$inject = ['$http', 'MyPlayersService'];
 
-    function controller($http, $state, UserValue, MyPlayersService) {
+    function controller($http, MyPlayersService) {
 
         var vm = this;
 
@@ -14,9 +14,6 @@
         init();
 
         function init() {
-            if (!UserValue._id) {
-                $state.go('start');
-            }
 
             vm.players = [];
             vm.blockVoting = false;
