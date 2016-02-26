@@ -12,6 +12,7 @@
         vm.goVoting = goVoting;
         vm.bestPlayer = bestPlayer;
         vm.myBestPlayer = myBestPlayer;
+        vm.adminPanel = adminPanel;
 
         init();
 
@@ -29,6 +30,10 @@
 
         function myBestPlayer() {
             $state.go('profile.myrating');
+        }
+
+        function adminPanel() {
+            $state.go('profile.admin');
         }
     }
 })();

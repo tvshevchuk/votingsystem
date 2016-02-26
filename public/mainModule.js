@@ -69,12 +69,13 @@
                         }
                     }
                 })
-                .state('admin', {
+                .state('profile.admin', {
                     url: '/admin',
                     views: {
-                        'content': {
-                            templateUrl: 'admin/admin.html',
-                            controller: 'AdminController'
+                        'content@': {
+                            templateUrl: 'profile/admin/admin.tpl.html',
+                            controller: 'AdminController',
+                            controllerAs: 'adminCtrl'
                         }
                     }
                 })

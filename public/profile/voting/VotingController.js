@@ -3,9 +3,9 @@
 
     angular.module('mafia').controller('VotingController', controller);
 
-    controller.$inject = ['$http', 'MyPlayersService'];
+    controller.$inject = ['$q', 'PlayerService'];
 
-    function controller($http, MyPlayersService) {
+    function controller($q, PlayerService) {
 
         var vm = this;
 
@@ -19,7 +19,7 @@
             vm.blockVoting = false;
             vm.array = [];
 
-            MyPlayersService.getMyPlayers().then(function(result) {
+            PlayerService.getMyPlayers().then(function(result) {
                 vm.players = result;
                 vm.array = _.shuffle(result);
                 comparePlayers();
@@ -83,14 +83,13 @@
                 postLeft = {rating: leftRating, myRating: myLeftRating};
                 postRight = {rating: rightRating, myRating: myRightRating};
 
-                $http.post('/api/player/' + vm.leftPlayer._id, postLeft)
-                    .success(function () {
-                        $http.post('/api/player/' + vm.rightPlayer._id, postRight)
-                            .success(function () {
-                                vm.blockVoting = false;
-                                comparePlayers();
-                            });
-                    });
+                $q.all([
+                    PlayerService.voteForPlayer(vm.leftPlayer._id, postLeft),
+                    PlayerService.voteForPlayer(vm.rightPlayer._id, postRight)
+                ]).then(function () {
+                    vm.blockVoting = false;
+                    comparePlayers();
+                });
             }
         }
     }

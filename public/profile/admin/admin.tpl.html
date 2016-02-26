@@ -1,0 +1,9 @@
+<div style="margin-top: 100px; margin-left: 50px;">
+    <div ng-repeat="user in adminCtrl.users track by user._id">
+        <a ng-bind="user.name" ng-click="adminCtrl.getRating(user._id)"></a>
+    </div>
+
+    <div ng-repeat="player in adminCtrl.players | orderBy: '-rating' track by player._id">
+        {{player.nickname}}: {{player.rating}}
+    </div>
+</div>

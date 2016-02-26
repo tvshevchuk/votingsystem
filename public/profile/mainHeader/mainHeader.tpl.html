@@ -9,10 +9,10 @@
     </div>
     <div class="collapse navbar-collapse" id="responsive-menu">
         <ul class="nav navbar-nav">
-            <li><a href="" ng-click="mainHeaderCtrl.goVoting(0)">Проголосовать</a></li>
-            <li><a href="" ng-click="mainHeaderCtrl.bestPlayer(0)">Общий рейтинг</a></li>
-            <li><a href="" ng-click="mainHeaderCtrl.myBestPlayer(0)">Мой рейтинг</a></li>
-            <li><a href="" ng-if="mainHeaderCtrl.user.isAdmin" ng-click="">Админка</a></li>
+            <li><a href="" ng-click="mainHeaderCtrl.goVoting()">Проголосовать</a></li>
+            <li><a href="" ng-click="mainHeaderCtrl.bestPlayer()">Общий рейтинг</a></li>
+            <li><a href="" ng-click="mainHeaderCtrl.myBestPlayer()">Мой рейтинг</a></li>
+            <li><a href="" ng-if="mainHeaderCtrl.user.isAdmin" ng-click="mainHeaderCtrl.adminPanel()">Админка</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/logout">Выход</a></li>

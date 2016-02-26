@@ -3,16 +3,16 @@
 
     angular.module('mafia').controller('MyRatingController', controller);
 
-    controller.$inject = ['MyPlayersService'];
+    controller.$inject = ['PlayerService'];
 
-    function controller(MyPlayersFactory) {
+    function controller(PlayerService) {
 
         var vm = this;
 
         init();
 
         function init() {
-            MyPlayersFactory.getMyPlayers().then(function(result) {
+            PlayerService.getMyPlayers().then(function(result) {
                 vm.players = result;
             });
         }
