@@ -3,7 +3,7 @@
         <a ng-bind="user.name" ng-click="adminCtrl.getRating(user._id)"></a>
     </div>
 
-    <div ng-repeat="player in adminCtrl.players | orderBy: '-rating' track by player._id">
-        {{player.nickname}}: {{player.rating}}
+    <div ng-repeat="player in adminCtrl.players | orderBy: '-myRating' track by player._id">
+        {{player.nickname}}: {{player.myRating}}
     </div>
 </div>
