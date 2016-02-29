@@ -1,10 +1,8 @@
-<div style="float: left; width: 20%;"
-         ng-repeat="player in ratingCtrl.players| orderBy: '-rating' track by player._id">
-        <div style="position: relative">
-            <img style="width: 100%" ng-src="{{player.image}}"/>
-            <div style="background: black; position: absolute; bottom: 10px; border-radius: 10px 10px; height: 60px; width: 100%">
-                <h5 style="color: white; padding-left: 10px;">{{player.nickname}}</h5>
-                <h5 style="color: white; padding-left: 10px; padding-bottom: 5px">Рейтинг: {{player.rating}}</h5>
+<div class="playerBox"
+     ng-repeat="player in ratingCtrl.players | orderBy: '-rating' track by player._id">
+            <img class="playerImage" ng-src="{{player.image}}"/>
+            <div class="playerInfo">
+                <h5>{{player.nickname}}</h5>
+                <h5>Рейтинг: {{player.rating}}</h5>
             </div>
-        </div>
 </div>

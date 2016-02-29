@@ -1,0 +1,22 @@
+.playerBox {
+  width: 20%;
+  float: left;
+  position: relative;
+}
+
+.playerImage {
+  width: 100%;
+}
+
+.playerInfo {
+  background: black;
+  color: white;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  height: 60px;
+  border-radius: 10px 10px;
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  bottom: 10px;
+}
