@@ -1,0 +1,14 @@
+.start-header .menulist .title {
+  text-transform: uppercase;
+  font-family: Impact, Charcoal, sans-serif;
+  color: #777;
+}
+
+.start-header .menulist .last-item a {
+  color: #777;
+}
+
+.start-header .menulist .last-item a:hover {
+  color: black;
+  text-decoration: none;
+}

@@ -1,0 +1,11 @@
+.main-header {
+    background: #101010;
+}
+
+.main-header .menulist a {
+  color: #777;
+}
+
+.main-header .menulist a:hover {
+  color: white;
+}
