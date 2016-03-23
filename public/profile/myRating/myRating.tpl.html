@@ -2,7 +2,7 @@
       ng-repeat="player in myRatingCtrl.players| orderBy: '-myRating' track by player._id">
         <img class="playerImage" ng-src="{{player.image}}"/>
         <div class="playerInfo">
-          <h5>{{player.nickname}}</h5>
-          <h5>Рейтинг: {{player.myRating}}</h5>
+          <div class="nickname">{{player.nickname}}</div>
+          <div class="rating">Рейтинг: {{player.myRating}}</div>
         </div>
 </div>
