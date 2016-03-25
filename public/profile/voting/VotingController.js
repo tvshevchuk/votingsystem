@@ -15,15 +15,13 @@
 
         function init() {
 
-            vm.players = [];
             vm.blockVoting = false;
-            vm.array = [];
 
-            PlayerService.getMyPlayers().then(function(result) {
-                vm.players = result;
-                vm.array = _.shuffle(result);
-                comparePlayers();
+            vm.players = _.filter(PlayerService.players, function(player) {
+                return player.myRating;
             });
+            vm.array = _.shuffle(vm.players);
+            comparePlayers();
         }
 
         function comparePlayers() {

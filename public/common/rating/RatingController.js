@@ -12,9 +12,8 @@
         init();
 
         function init() {
-            PlayerService.getAllPlayers().then(function(result) {
-                vm.players = result;
-            });
+            PlayerService.loadPlayersInfo();
+            vm.players = PlayerService.players;
         }
 
     }
