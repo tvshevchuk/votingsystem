@@ -10,7 +10,6 @@
         var service = this;
 
         service.loadPlayersInfo = loadPlayersInfo;
-        service.getAllPlayers = getAllPlayers;
         service.getMyPlayers = getMyPlayers;
         service.voteForPlayer = voteForPlayer;
 
@@ -18,6 +17,7 @@
 
         function init() {
           service.players = [];
+          service.userPlayers = {};
           service.myRatingIsLoaded = false;
         }
 
@@ -37,10 +37,13 @@
         function getMyPlayers(myId) {
             return $http.get('/api/players/users/' + myId)
                 .then(function (result) {
+                    service.userPlayers[myId] = [];
                     result.data.forEach(function(elem) {
                         if (elem.playerId !== myId) {
-                            var sameElem = _.find(service.players, {'_id': elem.playerId});
+                            var sameElem = angular.copy(_.find(service.players, {'_id': elem.playerId}));
                             sameElem.myRating = elem.rating;
+                            delete sameElem.rating;
+                            service.userPlayers[myId].push(sameElem);
                         }
                     });
                 });
@@ -59,6 +62,12 @@
             return $q.all([
                 $http.put('/api/players/' + id, {rating: data.rating}),
                 $http.put('/api/users/' + UserValue._id + '/players/' + id, {myRating: data.myRating})
+                  .then(function() {
+                      var player = _.find(service.userPlayers[UserValue._id], function(elem) {
+                          return elem._id === id;
+                      });
+                      player.myRating = data.myRating;
+                  });
             ]);
         }
 

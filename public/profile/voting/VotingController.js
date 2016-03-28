@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
     'use strict';
 
     angular.module('mafia').controller('VotingController', controller);
@@ -92,4 +92,4 @@
         }
     }
 
-})();
+})(angular);

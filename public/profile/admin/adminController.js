@@ -1,4 +1,4 @@
-(function() {
+(function(angular) {
     'use strict';
 
     angular.module('mafia').controller('AdminController', controller);
@@ -20,11 +20,10 @@
         }
 
         function getRating(id) {
-            PlayerService.getMyPlayers(id).then(function(result) {
-                vm.players = result;
-            });
+            PlayerService.getMyPlayers(id);
+            vm.players = PlayerService.userPlayers[id];
         }
 
     }
-    
-})();
+
+})(angular);

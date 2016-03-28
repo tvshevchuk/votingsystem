@@ -3,18 +3,16 @@
 
     angular.module('mafia').controller('MyRatingController', controller);
 
-    controller.$inject = ['PlayerService'];
+    controller.$inject = ['PlayerService', 'UserValue'];
 
-    function controller(PlayerService) {
+    function controller(PlayerService, UserValue) {
 
         var vm = this;
 
         init();
 
         function init() {
-            vm.players = _.filter(PlayerService.players, function(player) {
-                return player.myRating;
-            });
+            vm.players = PlayerService.userPlayers[UserValue._id];
         }
     }
 
