@@ -1,10 +1,16 @@
 body {
+  position: relative;
   padding: 0;
   margin: 0;
 }
 
 a:link, a:visited, a:hover, a:active {
   text-decoration: none;
+}
+
+.content {
+    position: absolute;
+    top: 40px;
 }
 
 .playerBox {
@@ -36,7 +42,9 @@ a:link, a:visited, a:hover, a:active {
 
 .header {
   width: 100%;
-  position: relative;
+  height: 40px;
+  position: fixed;
+  z-index: 2;
 }
 
 .start-header {

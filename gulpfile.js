@@ -12,7 +12,7 @@ gulp.task('css-concat', function() {
     return gulp.src(cssFiles)
         .pipe(concat('all.css'))
         .pipe(gulp.dest(destFolder));
-})
+});
 
 gulp.task('js-concat', function() {
     return gulp.src(jsFiles)

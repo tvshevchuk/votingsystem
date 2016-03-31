@@ -1,8 +1,10 @@
-<div class="playerBox"
-     ng-repeat="player in ratingCtrl.players | orderBy: '-rating' track by player._id">
-            <img class="playerImage" ng-src="{{player.image}}"/>
-            <div class="playerInfo">
-                <div class="nickname">{{player.nickname}}</div>
-                <div class="rating">Рейтинг: {{player.rating}}</div>
-            </div>
+<div class="content">
+    <div class="playerBox"
+         ng-repeat="player in ratingCtrl.players | orderBy: '-rating' track by player._id">
+                <img class="playerImage" ng-src="{{player.image}}"/>
+                <div class="playerInfo">
+                    <div class="nickname">{{player.nickname}}</div>
+                    <div class="rating">Рейтинг: {{player.rating}}</div>
+                </div>
+    </div>
 </div>

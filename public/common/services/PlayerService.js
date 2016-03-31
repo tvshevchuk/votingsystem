@@ -67,7 +67,7 @@
                           return elem._id === id;
                       });
                       player.myRating = data.myRating;
-                  });
+                  })
             ]);
         }
 
