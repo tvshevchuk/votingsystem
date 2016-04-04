@@ -54,40 +54,17 @@ router.get('/api/players', function(req, res) {
     })
 });
 
+router.get('/api/players/:playerId', function(req, res) {
+   Player.findOne({'_id': req.params.playerId}, function(err, player) {
+        if (err) { throw err; }
+        res.send(player);
+    });
+});
+
 router.get('/api/players/users/:userId', isLoggedIn, function(req, res) {
     UserPlayer.find({'userId': req.params.userId}, function(err, userplayers) {
         if (err) { throw err; }
         res.send(userplayers);
-        // if (userplayers.length) {
-        //     Player.find({}, function(err, players) {
-        //         if (err) {throw err;}
-        //
-        //         var myPlayers = [];
-        //         for (var i = 0; i < players.length; i++) {
-        //             var player = null,
-        //                 userplayer = null;
-        //             for (var j = 0; j < userplayers.length; j++) {
-        //                 if (userplayers[j].playerId == players[i]._id) {
-        //                     player = players[i];
-        //                     userplayer = userplayers[j];
-        //                 }
-        //             }
-        //             if (player) {
-        //                 myPlayers.push({
-        //                     _id: player._id,
-        //                     nickname: player.nickname,
-        //                     image: player.image,
-        //                     rating: player.rating,
-        //                     myRating: userplayer.rating
-        //                 });
-        //             }
-        //         }
-        //
-        //         res.send(myPlayers);
-        //     })}
-        // else {
-        //     res.send([]);
-        // }
     });
 });
 
@@ -112,29 +89,6 @@ router.put('/api/users/:userId/players/:playerId', function(req, res) {
         }
     })
 });
-
-// router.post('/api/player/:id', function(req, res) {
-//     Player.findOne({'_id': req.params.id}, function(err, player) {
-//         if (err) {
-//             throw err;
-//         }
-//         if (req.body.rating) { player.rating = req.body.rating; }
-//
-//         if (req.body.myRating) {
-//             UserPlayer.findOne().and([{'userId': req.user._id}, {'playerId': player._id}])
-//                 .exec(function(err, userPlayer) {
-//                     if (err) {throw err;}
-//                     userPlayer.rating = req.body.myRating;
-//                     userPlayer.save();
-//                 });
-//         }
-//
-//         player.save(function(err) {
-//             if (err) { throw err; }
-//         });
-//         res.json(player);
-//     });
-// });
 
 router.get('/auth/vkontakte', passport.authenticate('vkontakte'));
 

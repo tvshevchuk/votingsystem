@@ -1,11 +1,11 @@
-(function(angular) {
+(function(angular, _) {
     'use strict';
 
     angular.module('mafia').controller('VotingController', controller);
 
-    controller.$inject = ['$q', 'PlayerService'];
+    controller.$inject = ['$q', 'PlayerService', 'UserValue'];
 
-    function controller($q, PlayerService) {
+    function controller($q, PlayerService, UserValue) {
 
         var vm = this;
 
@@ -14,14 +14,19 @@
         init();
 
         function init() {
-
-            vm.blockVoting = false;
-
-            vm.players = _.filter(PlayerService.players, function(player) {
-                return player.myRating;
-            });
+            vm.players = PlayerService.userPlayers[UserValue._id];
+            vm.blockVoting = true;
             vm.array = _.shuffle(vm.players);
             comparePlayers();
+        }
+
+        function updateRating() {
+            $q.all([
+                PlayerService.updatePlayerRating(vm.leftPlayer),
+                PlayerService.updatePlayerRating(vm.rightPlayer)
+            ]).then(function() {
+               vm.blockVoting = false;
+            });
         }
 
         function comparePlayers() {
@@ -39,6 +44,7 @@
                 }
                 vm.array = vm.array.concat(tempArray);
             }
+            updateRating();
         }
 
         function voteForPlayer(isLeft) {
@@ -92,4 +98,4 @@
         }
     }
 
-})(angular);
+})(angular, _);

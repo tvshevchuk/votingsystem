@@ -1,10 +1,4 @@
 <div class="content">
-    <div>
-        <img ng-src="{{votingCtrl.leftPlayer.image}}" ng-click="votingCtrl.voteForPlayer(true)"
-             style="float: left; width: 50%; cursor: pointer;"/>
-    </div>
-    <div>
-        <img ng-src="{{votingCtrl.rightPlayer.image}}" ng-click="votingCtrl.voteForPlayer(false)"
-             style="float: left; width: 50%; cursor: pointer;"/>
-    </div>
+    <img class="votingBox" ng-src="{{votingCtrl.leftPlayer.image}}" ng-click="votingCtrl.voteForPlayer(true)"/>
+    <img class="votingBox" ng-src="{{votingCtrl.rightPlayer.image}}" ng-click="votingCtrl.voteForPlayer(false)" />
 </div>

@@ -9,7 +9,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .content {
-    position: absolute;
+    position: relative;
     top: 40px;
 }
 

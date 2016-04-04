@@ -10,6 +10,7 @@
         var service = this;
 
         service.loadPlayersInfo = loadPlayersInfo;
+        service.updatePlayerRating = updatePlayerRating;
         service.getMyPlayers = getMyPlayers;
         service.voteForPlayer = voteForPlayer;
 
@@ -42,7 +43,6 @@
                         if (elem.playerId !== myId) {
                             var sameElem = angular.copy(_.find(service.players, {'_id': elem.playerId}));
                             sameElem.myRating = elem.rating;
-                            delete sameElem.rating;
                             service.userPlayers[myId].push(sameElem);
                         }
                     });
@@ -55,6 +55,12 @@
                     getMyPlayers(UserValue._id);
                     service.myRatingIsLoaded = true;
                 }
+            });
+        }
+
+        function updatePlayerRating(player) {
+            return $http.get('/api/players/' + player._id).then(function(result) {
+                player.rating = result.data.rating;
             });
         }
 

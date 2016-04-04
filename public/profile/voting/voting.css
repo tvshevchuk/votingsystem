@@ -1,0 +1,6 @@
+.votingBox {
+    display: block;
+    float: left;
+    width: 50%;
+    cursor: pointer;
+}
