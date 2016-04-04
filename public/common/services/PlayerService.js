@@ -40,8 +40,8 @@
                 .then(function (result) {
                     service.userPlayers[myId] = [];
                     result.data.forEach(function(elem) {
-                        if (elem.playerId !== myId) {
-                            var sameElem = angular.copy(_.find(service.players, {'_id': elem.playerId}));
+                        var sameElem = angular.copy(_.find(service.players, {'_id': elem.playerId}));
+                        if (sameElem && elem.playerId !== myId) {
                             sameElem.myRating = elem.rating;
                             service.userPlayers[myId].push(sameElem);
                         }
