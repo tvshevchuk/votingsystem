@@ -1,9 +1,12 @@
 <div class="content">
-    <div ng-repeat="user in adminCtrl.users track by user._id">
-        <a ng-bind="user.name" ng-click="adminCtrl.getRating(user._id)"></a>
+    <div class="userList">
+        <div ng-repeat="user in adminCtrl.users track by user._id">
+            <a ng-bind="user.name" ng-click="adminCtrl.getRating(user._id)"></a>
+        </div>
     </div>
-
-    <div ng-repeat="player in adminCtrl.players | orderBy: '-myRating' track by player._id">
-        {{player.nickname}}: {{player.myRating}}
+    <div class="playerList">
+        <div ng-repeat="player in adminCtrl.players | orderBy: '-myRating' track by player._id">
+            {{player.nickname}}: {{player.myRating}}
+        </div>
     </div>
 </div>

@@ -1,0 +1,12 @@
+.userList {
+    width: 30%;
+    margin: 30px 0 0 30px;
+    float: left;
+}
+
+.playerList {
+    float: left;
+    width: 40%;
+    margin: 30px 0 0 0;
+    background: #e7e7e7;
+}
